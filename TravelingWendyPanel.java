@@ -14,10 +14,10 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
   /* Constructor */  
   public TravelingWendyPanel(/*TravelingWendy t*/){
     /* Set size of GUI window */
-    Dimension size = getPreferredSize();
+    /*Dimension size = getPreferredSize();
     size.width = 480;
     size.height = 360;
-    setPreferredSize(size);
+    setPreferredSize(size);*/
     
     /* [TODO] Dynamic label: set to select destination after click */
     selectLabel = new JLabel("Select origin building");
@@ -43,11 +43,13 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     Object v1 = graph.insertVertex(parent, null, "Hello", 20, 20, 80,
                                    30);
     Object v2 = graph.insertVertex(parent, null, "World!",
-                                   240, 150, 80, 30);
+                                   400, 150, 80, 30);
     graph.insertEdge(parent, null, "Edge", v1, v2);  
     graph.getModel().endUpdate();    
     
     final mxGraphComponent graphComponent = new mxGraphComponent(graph);
+    /*graphComponent.setSize(480, 360);*/ 
+
     add(graphComponent, gc);  
     
     /* Clickable cells */
