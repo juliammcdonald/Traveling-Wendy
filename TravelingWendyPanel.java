@@ -43,7 +43,7 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     Object v1 = graph.insertVertex(parent, null, "Hello", 20, 20, 80,
                                    30);
     Object v2 = graph.insertVertex(parent, null, "World!",
-                                   400, 150, 80, 30);
+                                   640, 400, 80, 30);
     graph.insertEdge(parent, null, "Edge", v1, v2);  
     graph.getModel().endUpdate();    
     
@@ -63,7 +63,7 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     });
     
     /* Display labels */
-    gc.weighty = 0.3;    
+    gc.weighty = 0.01;    
     gc.anchor = GridBagConstraints.NORTH;
     gc.gridy = 1;
     add(selectLabel, gc);
