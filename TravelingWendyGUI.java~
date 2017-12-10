@@ -13,6 +13,7 @@ public class TravelingWendyGUI {
     //TravelingWendy t = new TravelingWendy();
     
     TravelingWendyPanel panel = new TravelingWendyPanel(/*t*/);
+    frame.setSize(600, 300);
     frame.getContentPane().add(panel);
     
     frame.pack();
