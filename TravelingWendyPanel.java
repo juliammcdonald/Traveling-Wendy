@@ -4,6 +4,9 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
+import com.mxgraph.swing.mxGraphComponent;
+import com.mxgraph.view.mxGraph;
+
 public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
   /* Instance variables */
   JLabel selectLabel, mapLabel, resultLabel;
@@ -25,25 +28,48 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     setLayout(new GridBagLayout());
     GridBagConstraints gc = new GridBagConstraints();
     
-    /* Leftmost column (controls) */    
+    /* Map component*/    
     gc.weightx = 0.5;
     gc.weighty = 0.5;
     
     gc.gridx = 0;
-    gc.gridy= 0;    
-    add(selectLabel, gc);
+    gc.gridy= 0;
     
-    gc.weightx = 20;
-    gc.gridx = 1;
-    gc.gridy = 0;
-    add(resultLabel, gc);
+    /* From ClickHandler.java */
+    final mxGraph graph = new mxGraph();
+    Object parent = graph.getDefaultParent();
     
-    gc.anchor = GridBagConstraints.FIRST_LINE_START;
+    graph.getModel().beginUpdate();
+    Object v1 = graph.insertVertex(parent, null, "Hello", 20, 20, 80,
+                                   30);
+    Object v2 = graph.insertVertex(parent, null, "World!",
+                                   240, 150, 80, 30);
+    graph.insertEdge(parent, null, "Edge", v1, v2);  
+    graph.getModel().endUpdate();    
+    
+    final mxGraphComponent graphComponent = new mxGraphComponent(graph);
+    add(graphComponent, gc);  
+    
+    /* Clickable cells */
+    graphComponent.getGraphControl().addMouseListener(new MouseAdapter(){      
+      public void mouseReleased(MouseEvent e){
+        Object cell = graphComponent.getCellAt(e.getX(), e.getY());        
+        if (cell != null){
+          System.out.println("cell="+graph.getLabel(cell));
+        }
+      }
+    });
+    
+    /* Display labels */
+    gc.weighty = 0.3;    
+    gc.anchor = GridBagConstraints.NORTH;
     gc.gridy = 1;
-    gc.gridx = 0;
-    gc.weighty = 10;
-    add(mapLabel, gc);
+    add(selectLabel, gc);
+    gc.gridy = 2;
+    add(resultLabel, gc);
+   
     
+
   }
   
 }
