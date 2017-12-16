@@ -7,6 +7,8 @@ import javafoundations.*;
 public class WendyGraph {
   public ArrayList<Node> vertices;
   public ArrayList<LinkedList<Edge>> edges;
+  public Double[] latitudes; public Double[] longitudes;
+  public Double maxLong, minLong, maxLat, minLat;
   
   public WendyGraph( String fileName ) {
     vertices = new ArrayList<Node>();
@@ -48,6 +50,25 @@ public class WendyGraph {
         if( in.hasNext() )
           in.next();
       }
+      
+      /* Initialize array of longitudes */
+      longitudes = new Double[vertices.size()];
+      /* Initialize array of latitudes */
+      latitudes = new Double[vertices.size()];            
+      int i = 0;
+      for (Node n : vertices){
+        longitudes[i] = n.getLon();
+        latitudes[i] = n.getLat();
+        i++;
+      }
+      /* Instantiate minimum and maximum latitude and longitude */
+      Sorting.quickSort(longitudes, 0, longitudes.length - 1);
+      Sorting.quickSort(latitudes, 0, latitudes.length - 1);
+      maxLat = Math.abs(latitudes[0]); 
+      minLat = Math.abs(latitudes[latitudes.length - 1]); 
+      maxLong = Math.abs(longitudes[0]);
+      minLong = Math.abs(longitudes[longitudes.length - 1]);
+            
     } catch( IOException e ) {
       System.out.println( "File IO Exception" );
     }
@@ -92,7 +113,7 @@ public class WendyGraph {
     PriorityQueue q = new PriorityQueue( vertices );
   }
   
-  /*@return longs - array of longitudes, type Double*/
+/* -----------((deprecated, moved to constructor)) 
   public Double[] getAllLongitudes(){
     Double[] longs = new Double[vertices.size()];
     int i = 0;
@@ -101,9 +122,7 @@ public class WendyGraph {
       i++;
     }
     return longs;
-  }
-  
-    /*@return lats - array of latitudes, type double*/
+  }    
   public Double[] getAllLatitudes(){
     Double[] lats = new Double[vertices.size()];
     int i = 0;
@@ -114,13 +133,8 @@ public class WendyGraph {
     return lats;
   }
   
-  /*
-   * @return maximum or minimum longitude existing in graph
-   * @param type - "max" or "min"
-   */
-  public Double getLongitude(String type){
-    Double[] longs = getAllLongitudes();
-    Sorting.quickSort(longs, 0, longs.length - 1);
+  public Double getLongitude(String type){    
+    Sorting.quickSort(longitude, 0, longs.length - 1);
     if (type.equals("max")){     
       return Math.abs(longs[0]); //max
     } else {//does not consider invalid input since not open to user
@@ -128,10 +142,6 @@ public class WendyGraph {
     }
   }
   
-    /*
-   * @return maximum or minimum latitude existing in graph
-   * @param type - "max" or "min"
-   */
   public Double getLatitude(String type){
     Double[] lats = getAllLatitudes();
     Sorting.quickSort(lats, 0, lats.length - 1);
@@ -140,23 +150,21 @@ public class WendyGraph {
     } else {//does not consider invalid input since not open to user
       return Math.abs(lats[lats.length - 1]); //min
     }
-  }
+  }-------------------*/
+ 
   
   /* @return */
   public int[] getPixelCoordinates(double lat, double lon, int mapWidth, int mapHeight){
-    Double maxLong = getLongitude("max");
-    Double minLong = getLongitude("min");
-    Double maxLat = getLatitude("max");
-    Double minLat = getLatitude("min");
-    
+
     System.out.printf("maxLong:%f minLong:%f maxLat:%f minLat:%f\n", maxLong, minLong, maxLat, minLat);
     
-    Double spanLong = maxLong - minLong;
-    Double spanLat = maxLat - minLat;
+    /* Brute force handling of floating point precision */
+    Double spanLong = (maxLong - minLong) * 10E5;
+    Double spanLat = (maxLat - minLat) * 10E5;
         
     int[] pixelCoords = new int[2];
-    pixelCoords[0] = (int)Math.round(((lon - minLong) / spanLong) * mapWidth);
-    pixelCoords[1] = (int)Math.round(((lat - minLat) / spanLat) * mapHeight);
+    pixelCoords[0] = (int)Math.round(((lon*10E5 - minLong*10E5) / spanLong) * mapWidth);
+    pixelCoords[1] = (int)Math.round(((lat*10E5 - minLat*10E5) / spanLat) * mapHeight);
     
     return pixelCoords;
   }
@@ -164,7 +172,13 @@ public class WendyGraph {
   public static void main( String[] args ) {
     WendyGraph w = new WendyGraph( "wellesleycoord.txt" );
 
-    System.out.println(w.getPixelCoordinates(42.29, 71.30, 750, 520)[0] + " " + 
-                       w.getPixelCoordinates(42.29, 71.30, 750, 520)[1]);
+    System.out.println(w.getPixelCoordinates(42.29449, 71.30, 750, 520)[0] + " " + 
+                       w.getPixelCoordinates(42.29449, 71.30, 750, 520)[1]);
+    System.out.println(w.getPixelCoordinates(42.29450, 71.30, 750, 520)[0] + " " + 
+                       w.getPixelCoordinates(42.29450, 71.30, 750, 520)[1]);
+    System.out.println(w.getPixelCoordinates(42.29455, 71.30, 750, 520)[0] + " " + 
+                       w.getPixelCoordinates(42.29455, 71.30, 750, 520)[1]);
+    System.out.println(w.getPixelCoordinates(42.29456, 71.30, 750, 520)[0] + " " + 
+                       w.getPixelCoordinates(42.29456, 71.30, 750, 520)[1]);
   }
 }
