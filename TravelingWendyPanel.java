@@ -18,11 +18,6 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     GRAPH = new WendyGraph( "wellesleycoord.txt" );
     /*Extract all longitudes*/
     
-    /* Set size of GUI window */
-    /*Dimension size = getPreferredSize();
-    size.width = 480;
-    size.height = 360;
-    setPreferredSize(size);*/
     
     /* [TODO] Dynamic label: set to select destination after click */
     selectLabel = new JLabel("Select origin building");

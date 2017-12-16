@@ -93,7 +93,7 @@ public class WendyGraph {
   }
   
   /*@return longs - array of longitudes, type Double*/
-  public Double[] getLongitudes(){
+  public Double[] getAllLongitudes(){
     Double[] longs = new Double[vertices.size()];
     int i = 0;
     for (Node n : vertices){
@@ -104,7 +104,7 @@ public class WendyGraph {
   }
   
     /*@return lats - array of latitudes, type double*/
-  public Double[] getLatitudes(){
+  public Double[] getAllLatitudes(){
     Double[] lats = new Double[vertices.size()];
     int i = 0;
     for (Node n : vertices){
@@ -119,7 +119,7 @@ public class WendyGraph {
    * @param type - "max" or "min"
    */
   public Double getLongitude(String type){
-    Double[] longs = getLongitudes();
+    Double[] longs = getAllLongitudes();
     Sorting.quickSort(longs, 0, longs.length - 1);
     if (type.equals("max")){     
       return Math.abs(longs[0]); //max
@@ -133,7 +133,7 @@ public class WendyGraph {
    * @param type - "max" or "min"
    */
   public Double getLatitude(String type){
-    Double[] lats = getLatitudes();
+    Double[] lats = getAllLatitudes();
     Sorting.quickSort(lats, 0, lats.length - 1);
     if (type.equals("max")){     
       return Math.abs(lats[0]); //max
@@ -142,11 +142,29 @@ public class WendyGraph {
     }
   }
   
+  /* @return */
+  public int[] getPixelCoordinates(double lat, double lon, int mapWidth, int mapHeight){
+    Double maxLong = getLongitude("max");
+    Double minLong = getLongitude("min");
+    Double maxLat = getLatitude("max");
+    Double minLat = getLatitude("min");
+    
+    System.out.printf("maxLong:%f minLong:%f maxLat:%f minLat:%f\n", maxLong, minLong, maxLat, minLat);
+    
+    Double spanLong = maxLong - minLong;
+    Double spanLat = maxLat - minLat;
+        
+    int[] pixelCoords = new int[2];
+    pixelCoords[0] = (int)Math.round(((lon - minLong) / spanLong) * mapWidth);
+    pixelCoords[1] = (int)Math.round(((lat - minLat) / spanLat) * mapHeight);
+    
+    return pixelCoords;
+  }
+  
   public static void main( String[] args ) {
     WendyGraph w = new WendyGraph( "wellesleycoord.txt" );
-    System.out.println(w.getLongitude("max") );
-    System.out.println(w.getLongitude("min") );
-    System.out.println(w.getLatitude("max") );
-     System.out.println(w.getLatitude("min") );
+
+    System.out.println(w.getPixelCoordinates(42.29, 71.30, 750, 520)[0] + " " + 
+                       w.getPixelCoordinates(42.29, 71.30, 750, 520)[1]);
   }
 }
