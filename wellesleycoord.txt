@@ -99,112 +99,112 @@ i	i66	42.294335	-71.306163
 i	i67	42.294110	-71.305160
 
 
-r	r1	EASTENTRY	SCOOP
-r	r2	SCOOP	WELLESLEYCLUB
-r	r3	WELLESLEYCLUB	i5
-r	r4	SCOOP	i5
-r	r5	i5	i6
-r	r6	i5	i13
-r	r7	i13	DOWER
-r	r8	i13	i12
-r	r9	i12	ADMISSIONS
-r	r10	i11	i12
-r	r11	i11	ADMISSIONS
-r	r12	i12	i14
-r	r13	i13	i14
-r	r14	i14	i15
-r	r15	i15	i28
-r	r16	i28	DOWER
-r	r17	i28	r29
-r	r18	i29	BATES
-r	r19	i31	MACAFEE
-r	r20	i29	i31
-r	r21	i31	i32
-r	r22	i32	i33
-r	r23	i33	i30
-r	r24	i30	i29
-r	r25	i30	i28
-r	r26	i6	i7
-r	r27	i8	i7
-r	r28	i8	i9
-r	r29	i7	i9
-r	r30	i9	i10
-r	r31	i10	i11
-r	r32	i32	i36
-r	r33	i36	i37
-r	r34	i37	VILLE
-r	r35	i37	i33
-r	r36	i33	i40
-r	r37	i40	i39
-r	r38	i39	VILLE
-r	r39	i17	i10
-r	r40	i17	STONEDAVIS
-r	r41	STONEDAVIS	i15
-r	r42	i30	STONECTR
-r	r43	STONEDAVIS	i25
-r	r44	i15	i16
-r	r45	i16	i25
-r	r46	i25	i24
-r	r47	i24	i16
-r	r48	i8	i21
-r	r49	i9	i20
-r	r50	i20	i21
-r	r51	i20	i25
-r	r52	i20	CHAPEL
-r	r53	CHAPEL	i22
-r	r54	i22	i25
-r	r55	i24	i53
-r	r56	i16	i28
-r	r57	i23	i25
-r	r58	i49	STONECTR
-r	r59	i49	i50
-r	r60	i28	i50
-r	r61	i28	i24
-r	r62	i24	i55
-r	r63	i55	i50
-r	r64	i36	i35
-r	r65	i49	i35
-r	r66	i35	i45
-r	r67	i45	SCICTRBACK
-r	r68	i45	i47
-r	r69	i47	SCICTRBACK
-r	r70	i47	OBSERVATORY
-r	r71	i51	i50
-r	r72	i51	i24
-r	r73	SCICTR	i51
-r	r74	i42	i40
-r	r75	i43	i40
-r	r76	i42	i43
-r	r77	i41	i40
-r	r78	i41	i42
-r	r79	i51	i48
-r	r80	i48	SCICTRBACK
-r	r81	i2	i48
-r	r82	i2	i3
-r	r83	i3	i48
-r	r84	i41	i3
-r	r85	i52	i54
-r	r86	i52	i51
-r	r87	i53	i52
-r	r88	i53	i54
-r	r89	i54	i56
-r	r90	i56	i2
-r	r91	i39	i57
-r	r92	i57	i58
-r	r93	i58	i59
-r	r94	i59	i60
-r	r95	i60	i61
-r	r96	i61	WESTENTRY
-r	r97	i57	i62
-r	r98	i3	i62
-r	r99	i3	i64
-r	r100	i62	i63
-r	r101	i62	i64
-r	r102	i63	i64
-r	r103	i63	MUNGER
-r	r104	i64	i65
-r	r105	i65	i66
-r	r106	i64	i66
-r	r107	i66	i67
-r	r108	i66 PENDLETONWEST
-r	r109	i67	PENDLETONEAST
+r	EASTENTRY	SCOOP
+r	SCOOP	WELLESLEYCLUB
+r	WELLESLEYCLUB	i5
+r	SCOOP	i5
+r	i5	i6
+r	i5	i13
+r	i13	DOWER
+r	i13	i12
+r	i12	ADMISSIONS
+r	i11	i12
+r	i11	ADMISSIONS
+r	i12	i14
+r	i13	i14
+r	i14	i15
+r	i15	i28
+r	i28	DOWER
+r	i28	i29
+r	i29	BATES
+r	i31	MACAFEE
+r	i29	i31
+r	i31	i32
+r	i32	i33
+r	i33	i30
+r	i30	i29
+r	i30	i28
+r	i6	i7
+r	i8	i7
+r	i8	i9
+r	i7	i9
+r	i9	i10
+r	i10	i11
+r	i32	i36
+r	i36	i37
+r	i37	VILLE
+r	i37	i33
+r	i33	i40
+r	i40	i39
+r	i39	VILLE
+r	i17	i10
+r	i17	STONEDAVIS
+r	STONEDAVIS	i15
+r	i30	STONECTR
+r	STONEDAVIS	i25
+r	i15	i16
+r	i16	i25
+r	i25	i24
+r	i24	i16
+r	i8	i21
+r	i9	i20
+r	i20	i21
+r	i20	i25
+r	i20	CHAPEL
+r	CHAPEL	i22
+r	i22	i25
+r	i24	i53
+r	i16	i28
+r	i23	i25
+r	i49	STONECTR
+r	i49	i50
+r	i28	i50
+r	i28	i24
+r	i24	i55
+r	i55	i50
+r	i36	i35
+r	i49	i35
+r	i35	i45
+r	i45	SCICTRBACK
+r	i45	i47
+r	i47	SCICTRBACK
+r	i47	OBSERVATORY
+r	i51	i50
+r	i51	i24
+r	SCICTR	i51
+r	i42	i40
+r	i43	i40
+r	i42	i43
+r	i41	i40
+r	i41	i42
+r	i51	i48
+r	i48	SCICTRBACK
+r	i2	i48
+r	i2	i3
+r	i3	i48
+r	i41	i3
+r	i52	i54
+r	i52	i51
+r	i53	i52
+r	i53	i54
+r	i54	i56
+r	i56	i2
+r	i39	i57
+r	i57	i58
+r	i58	i59
+r	i59	i60
+r	i60	i61
+r	i61	WESTENTRY
+r	i57	i62
+r	i3	i62
+r	i3	i64
+r	i62	i63
+r	i62	i64
+r	i63	i64
+r	i63	MUNGER
+r	i64	i65
+r	i65	i66
+r	i64	i66
+r	i66	i67
+r	i66 PENDLETONWEST
+r	i67	PENDLETONEAST
