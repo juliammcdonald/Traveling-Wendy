@@ -1,6 +1,6 @@
 import java.util.*;
 import java.io.*;
-import javafoundations.*;
+
 /**
  * Creates a Graph of Nodes and Edges. This is a weighted adjacency list graph.
  */
@@ -92,61 +92,8 @@ public class WendyGraph {
     PriorityQueue q = new PriorityQueue( vertices );
   }
   
-  /*@return longs - array of longitudes, type Double*/
-  public Double[] getLongitudes(){
-    Double[] longs = new Double[vertices.size()];
-    int i = 0;
-    for (Node n : vertices){
-      longs[i] = n.getLon();
-      i++;
-    }
-    return longs;
-  }
-  
-    /*@return lats - array of latitudes, type double*/
-  public Double[] getLatitudes(){
-    Double[] lats = new Double[vertices.size()];
-    int i = 0;
-    for (Node n : vertices){
-      lats[i] = n.getLat();
-      i++;
-    }
-    return lats;
-  }
-  
-  /*
-   * @return maximum or minimum longitude existing in graph
-   * @param type - "max" or "min"
-   */
-  public Double getLongitude(String type){
-    Double[] longs = getLongitudes();
-    Sorting.quickSort(longs, 0, longs.length - 1);
-    if (type.equals("max")){     
-      return Math.abs(longs[0]); //max
-    } else {//does not consider invalid input since not open to user
-      return Math.abs(longs[longs.length - 1]); //min
-    }
-  }
-  
-    /*
-   * @return maximum or minimum latitude existing in graph
-   * @param type - "max" or "min"
-   */
-  public Double getLatitude(String type){
-    Double[] lats = getLatitudes();
-    Sorting.quickSort(lats, 0, lats.length - 1);
-    if (type.equals("max")){     
-      return Math.abs(lats[0]); //max
-    } else {//does not consider invalid input since not open to user
-      return Math.abs(lats[lats.length - 1]); //min
-    }
-  }
-  
   public static void main( String[] args ) {
     WendyGraph w = new WendyGraph( "wellesleycoord.txt" );
-    System.out.println(w.getLongitude("max") );
-    System.out.println(w.getLongitude("min") );
-    System.out.println(w.getLatitude("max") );
-     System.out.println(w.getLatitude("min") );
+    System.out.println( w );
   }
 }

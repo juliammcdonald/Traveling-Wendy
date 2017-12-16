@@ -10,9 +10,14 @@ import com.mxgraph.view.mxGraph;
 public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
   /* Instance variables */
   JLabel selectLabel, mapLabel, resultLabel;
+  WendyGraph GRAPH;
   
   /* Constructor */  
-  public TravelingWendyPanel(/*TravelingWendy t*/){
+  public TravelingWendyPanel(){
+    
+    GRAPH = new WendyGraph( "wellesleycoord.txt" );
+    /*Extract all longitudes*/
+    
     /* Set size of GUI window */
     /*Dimension size = getPreferredSize();
     size.width = 480;
