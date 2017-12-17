@@ -20,7 +20,7 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
   private WendyGraph wendyGraph;
   private String[] selectedNodes;
   private Object[] coloredCells;
-
+  
   private mxGraph graph; private Object parent; private mxGraphComponent graphComponent;
 //necessary for mxGraph function
   
@@ -30,9 +30,9 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     wendyGraph = new WendyGraph( "wellesleycoord.txt" );
     
     selectedNodes = new String[2];
-
+    
     selectLabel = new JLabel("Select origin");    
-
+    
     mapLabel = new JLabel("This is the map placeholder XD");    
     
     setLayout(new GridBagLayout());
@@ -73,21 +73,21 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     int[] pixelCoors = new int[2];
     for (Node vertex : wendyGraph.vertices){
       pixelCoors = wendyGraph.getPixelCoordinates( Math.abs(vertex.getLat()), 
-                                                   Math.abs(vertex.getLon()),
-                                                   graphViewportWidth,
-                                                   graphViewportHeight);
+                                                  Math.abs(vertex.getLon()),
+                                                  graphViewportWidth,
+                                                  graphViewportHeight);
       System.out.printf("Plotting: [%d, %d]\n",pixelCoors[0],pixelCoors[1]);      
       
       Object v;
       if (vertex.getisBuilding()){
         v = graph.insertVertex(parent, null, vertex.getName(), 
-                         pixelCoors[0], pixelCoors[1], 
-                         vertex.getName().length() * 10 - 10, 20,
-                                      "BUILDING");
+                               pixelCoors[0], pixelCoors[1], 
+                               vertex.getName().length() * 10 - 10, 20,
+                               "BUILDING");
       } else { //intersection
         v = graph.insertVertex(parent, null, vertex.getName(), 
-                         pixelCoors[0], pixelCoors[1], 
-                         15, 15,
+                               pixelCoors[0], pixelCoors[1], 
+                               15, 15,
                                "INTERSECTION");
       }
       
@@ -103,7 +103,7 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
         
         graph.insertEdge(parent, null, /*e.getLengthFormatted(),*/ "", 
                          vertexObjects.get(index1), vertexObjects.get(index2),
-        "endArrow=None;");
+                         "endArrow=None;");
         System.out.printf("Drawing edge. . .\n");
       }
     }       
@@ -111,7 +111,7 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     
     graphComponent = new mxGraphComponent(graph);
     graphComponent.setEnabled(false);
-
+    
     add(graphComponent, gc);  
     
     /*----------Click handler----------*/  
@@ -125,8 +125,9 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
           if ( selectedNodes[0] == null ){            
             selectedNodes[0] = graph.getLabel(cell);
             selectLabel.setText("Select destination");
-            graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "red", new Object[]{cell});
-            graph.setCellStyles(mxConstants.STYLE_STROKECOLOR, "red", new Object[]{cell});
+            coloredCells = new Object[]{cell};
+            graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "red", coloredCells);
+            graph.setCellStyles(mxConstants.STYLE_STROKECOLOR, "red", coloredCells);
             
           } else if ( selectedNodes[1] == null ){ //origin is already selected, but not destination
             selectedNodes[1] = graph.getLabel(cell);
@@ -172,44 +173,47 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     gc.anchor = GridBagConstraints.NORTH;
     gc.gridy = 1;
     add(selectLabel, gc);
-
+    
     gc.gridy++;
     resetButton = new JButton("Reset");
     add(resetButton, gc);
     resetButton.addActionListener(new ButtonListener());
     
-
+    
     /*----------Set and Scale Background *written by Julia*----------*/
     ImageIcon image = new ImageIcon("wellesleyBG3.png");
     /*graphComponent.setPageVisible(true);
-    
-    Paper paper = new Paper();
-    paper.setSize((double)image.getIconWidth(), (double)image.getIconHeight());
-    graphComponent.getPageFormat().setPaper(paper);*/
+     * 
+     Paper paper = new Paper();
+     paper.setSize((double)image.getIconWidth(), (double)image.getIconHeight());
+     graphComponent.getPageFormat().setPaper(paper);*/
     graphComponent.setBackgroundImage(image);
     //graphComponent.setPageScale(1.0);
     //getContentPane().add(graphComponent, BorderLayout.CENTER);
     
-
+    
   }
-
+  
   /*----------Button handler----------*/
   private class ButtonListener implements ActionListener {
     public void actionPerformed(ActionEvent e){
       if (e.getSource() == resetButton){           
         selectLabel.setText("Select origin");
-        
+         
         /*----------Reset colored paths-------*/
         graph.getModel().beginUpdate();        
         try {
-          for (int j = 0; j < (coloredCells.length - 1); j++){
-            Object[] edge = graph.getEdgesBetween(coloredCells[j], coloredCells[j+1]);
-            graph.setCellStyles(mxConstants.STYLE_STROKECOLOR, "", edge);
-            graph.setCellStyles(mxConstants.STYLE_STROKEWIDTH, "1", edge);
+          if (coloredCells != null){
+            for (int j = 1; j < (coloredCells.length); j++){
+              Object[] edge = graph.getEdgesBetween(coloredCells[j-1], coloredCells[j]);
+              graph.setCellStyles(mxConstants.STYLE_STROKECOLOR, "", edge);
+              graph.setCellStyles(mxConstants.STYLE_STROKEWIDTH, "1", edge);
+            }
           }
+          
           graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "", coloredCells);
           graph.setCellStyles(mxConstants.STYLE_STROKECOLOR, "", coloredCells);
-          
+            
           coloredCells = null;
           selectedNodes = new String[2];
 
@@ -221,3 +225,4 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     }
   }
 }
+
