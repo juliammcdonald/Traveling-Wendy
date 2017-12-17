@@ -111,10 +111,6 @@ public class WendyGraph {
     return s;
   }
   
-  public void dijkstra( String startName ) {
-    PriorityQueue q = new PriorityQueue( vertices );
-  }
-  
 /* -----------((deprecated, moved to constructor)) 
   public Double[] getAllLongitudes(){
     Double[] longs = new Double[vertices.size()];
@@ -182,14 +178,18 @@ public class WendyGraph {
     Node source = vertices.get( findNodeIndex( sourceName ) );
     
     System.out.println( source );
-    NavigableSet<Node> q = new TreeSet<>();
+    NavigableSet<Node> q = new TreeSet<Node>();
     
     for( Node v : vertices ) {
-      v.setPrev( null );
-      if( v.getName().equals( sourceName ) )
+      
+      if( v.getName().equals( sourceName ) ) {
         v.setWeight( 0 );
-      else
+        v.setPrev( v );
+      }
+      else  {
         v.setWeight( Double.MAX_VALUE );
+        v.setPrev( null );
+      }
       q.add( v );
     }
     
