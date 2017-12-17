@@ -23,9 +23,16 @@ public class Edge {
     node2 = n2;
   }
   
-  /* The 'haversine' formula, referenced from https://www.movable-type.co.uk/scripts/latlong.html */
+  /* The 'haversine' formula to find distance in meter given the latitude&longitude of two points, 
+   * referenced from https://www.movable-type.co.uk/scripts/latlong.html 
+   * @param lat1 - latitude of first point.
+   * @param lon1 - longitude of first point.
+   * @param lat2 - latitude of 2nd point.
+   * @param lon2 - longitude of 2nd point.
+   * @return - the distance in meters.
+   */
   public static double getGreatCircleDistance(double lat1, double lon1, double lat2, double lon2){
-    double R = 6317E3;
+    double R = 6317E3; //Radius of Earth!
     double phi1 = Math.toRadians(lat1);
     double phi2 = Math.toRadians(lat2);
     double dPhi = Math.toRadians(lat2-lat1);
@@ -41,14 +48,12 @@ public class Edge {
   public double getLength(){
     return length;    
   }
-  public String getLengthFormatted(){
+  
+  public String getLengthFormatted(int numDigitsAfterDecimal){
    DecimalFormat df = new DecimalFormat();
-   df.setMaximumFractionDigits(0);
+   df.setMaximumFractionDigits(numDigitsAfterDecimal);
    return df.format(getLength());
   }
-//  public double getLength() {
-//    return length;
-//  }
   
   public Node getNode1() {
     return node1;
