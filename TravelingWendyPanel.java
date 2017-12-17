@@ -16,24 +16,23 @@ import com.mxgraph.util.*;
 public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
   /*----------Instance variables----------*/
   private JLabel selectLabel, mapLabel;
+  private JButton resetButton;
   private WendyGraph wendyGraph;
-  private static final int graphViewportWidth = 825;
-  private static final int graphViewportHeight = 600;
-  private boolean originSelected;
-  private boolean destinationSelected;
-
+  private String[] selectedNodes;
+  private Object[] coloredCells;
+  private mxGraph graph; 
+  private Object parent; //necessary for mxGraph function
   
   /*----------Constructor----------*/  
-  public TravelingWendyPanel(){
+  public TravelingWendyPanel(int graphViewportWidth, int graphViewportHeight){
     
     wendyGraph = new WendyGraph( "wellesleycoord.txt" );
     
-    originSelected = false;
-    destinationSelected = false;
+    selectedNodes = new String[2];
 
     selectLabel = new JLabel("Select origin");    
 
-    mapLabel = new JLabel("This is the map placeholder XD");
+    mapLabel = new JLabel("This is the map placeholder XD");    
     
     setLayout(new GridBagLayout());
     GridBagConstraints gc = new GridBagConstraints();
@@ -46,14 +45,15 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     gc.gridy= 0;
     
     /*----------From ClickHandler.java----------*/
-    final mxGraph graph = new mxGraph();
-    Object parent = graph.getDefaultParent();
+    graph = new mxGraph();
+    parent = graph.getDefaultParent();
     
     /*----------Create vertex stylesheets----------*/
     mxStylesheet stylesheet = graph.getStylesheet();
     Hashtable<String, Object> style = new Hashtable<String, Object>();
     style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_CYLINDER);
     style.put(mxConstants.STYLE_FONTCOLOR, "#000000");
+    style.put(mxConstants.STYLE_OPACITY, 75);
     style.put(mxConstants.STYLE_FONTSTYLE, mxConstants.FONT_BOLD);
     style.put(mxConstants.STYLE_GRADIENTCOLOR, mxUtils.getHexColorString(Color.BLUE));
     style.put(mxConstants.STYLE_GRADIENT_DIRECTION, mxConstants.DIRECTION_NORTH); 
@@ -63,12 +63,13 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     Hashtable<String, Object> style2 = new Hashtable<String, Object>();
     style2.put(mxConstants.STYLE_OPACITY, 50);
     style2.put(mxConstants.STYLE_FONTCOLOR, "#000000");
+    //style2.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_ELLIPSE);
     stylesheet.putCellStyle("INTERSECTION", style2);
     
     graph.getModel().beginUpdate();
     
     /*----------Plot all vertices----------*/    
-    Vector<Object> vertexObjects = new Vector<Object>(wendyGraph.vertices.size());
+    final Vector<Object> vertexObjects = new Vector<Object>(wendyGraph.vertices.size());
     int[] pixelCoors = new int[2];
     for (Node vertex : wendyGraph.vertices){
       pixelCoors = wendyGraph.getPixelCoordinates( Math.abs(vertex.getLat()), 
@@ -113,37 +114,60 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
 
     add(graphComponent, gc);  
     
-    /*----------Clickable cells----------*/
-    final String[] selectedNodes = new String[2];
-    
+    /*----------Click handler----------*/  
     graphComponent.getGraphControl().addMouseListener(new MouseAdapter(){      
       public void mouseReleased(MouseEvent e){
         Object cell = graphComponent.getCellAt(e.getX(), e.getY());
         
-        if ((cell != null) || (!originSelected) || (!destinationSelected)) {
+        if ((cell != null) || (selectedNodes[0] == null) || (selectedNodes[1] == null)) {
           System.out.println("cell="+graph.getLabel(cell));
           
-          if ( originSelected == false ){            
-            originSelected = true;
+          if ( selectedNodes[0] == null ){            
             selectedNodes[0] = graph.getLabel(cell);
             selectLabel.setText("Select destination");
             graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "red", new Object[]{cell});
+            graph.setCellStyles(mxConstants.STYLE_STROKECOLOR, "red", new Object[]{cell});
             
-          } else if ( destinationSelected == false ){ //origin is already selected
-            destinationSelected = true;
+          } else if ( selectedNodes[1] == null ){ //origin is already selected, but not destination
             selectedNodes[1] = graph.getLabel(cell);
-            graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "red", new Object[]{cell});
             graphComponent.refresh();
             selectLabel.setText("Calculating. . .");
+            /*----------Couldn't figure out how to use Thread.sleep(1000) properly----------*/
             
             /*----------Call Dijkstra ----------*/
             ArrayList<Node> shortestPath = wendyGraph.runDijkstra(selectedNodes[0], selectedNodes[1]);
             selectLabel.setText("The shortest path is: "+ shortestPath.toString());
             
+            /*---------Color path----------*/
+            coloredCells = new Object[shortestPath.size()];
+            int j = 0;
+            for (Node n : shortestPath) {
+              int i = wendyGraph.vertices.indexOf(n);
+              coloredCells[j] = vertexObjects.get(i);
+              j++;
+            }            
+            graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "red", coloredCells);
+            graph.setCellStyles(mxConstants.STYLE_STROKECOLOR, "red", coloredCells);
+            /*----------Couldn't figure out how to update edge group style,
+             * so just redrew the edges for the shortest path ----------*/
+            
+            graph.getModel().beginUpdate();
+            try {
+              for (j = 0; j < (coloredCells.length - 1); j++){
+                Object edge = graph.getEdgesBetween(coloredCells[j], coloredCells[j+1]);
+                System.out.println(edge);
+                graph.getModel().remove(edge);
+//                graph.insertEdge(parent, null, "", 
+//                                 coloredCells[j], coloredCells[j+1],
+//                                 "endArrow=None;strokeColor=red;strokeWidth=4");
+              }
+            } finally {
+              graph.getModel().endUpdate();
+            }
           }
         }
       }
-    });
+    }); /*----------End clickhandler-----------*/    
     
     /*----------Display labels----------*/
     gc.weighty = 0.01;    
@@ -151,6 +175,11 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     gc.gridy = 1;
     add(selectLabel, gc);
 
+    gc.gridy++;
+    resetButton = new JButton("Reset");
+    add(resetButton, gc);
+    resetButton.addActionListener(new ButtonListener());
+    
 
     /*----------Set and Scale Background *written by Julia*----------*/
     ImageIcon image = new ImageIcon("wellesleyBG3.png");
@@ -166,6 +195,26 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
 
   }
 
-  
-  
+  /*----------Button handler----------*/
+  private class ButtonListener implements ActionListener {
+    public void actionPerformed(ActionEvent e){
+      if (e.getSource() == resetButton){           
+        selectLabel.setText("Select origin");
+        
+        graph.getModel().beginUpdate();
+        
+        try {
+          for (int j = 0; j < (coloredCells.length - 1); j++){
+            Object edge = graph.getEdgesBetween(coloredCells[j], coloredCells[j+1]);
+            graph.getModel().remove( edge);
+            graph.insertEdge(parent, null, "", 
+                             coloredCells[j], coloredCells[j+1],
+                             "endArrow=None;");
+          }
+        } finally {
+          graph.getModel().endUpdate();
+        }
+      }
+    }
+  }
 }
