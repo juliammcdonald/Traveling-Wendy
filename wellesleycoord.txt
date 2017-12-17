@@ -114,7 +114,6 @@ r	i12	i14
 r	i13	i14
 r	i14	i15
 r	i15	i28
-r	i28	DOWER
 r	i28	i29
 r	i29	BATES
 r	i31	MACAFEE
