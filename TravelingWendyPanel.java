@@ -6,7 +6,6 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
-import java.awt.print.Paper;
 
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.*;
@@ -180,17 +179,9 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     resetButton.addActionListener(new ButtonListener());
     
 
-    /*----------Set and Scale Background *written by Julia*----------*/
+    /*----------Set Background *written by Julia*----------*/
     ImageIcon image = new ImageIcon("wellesleyBG3.png");
-    /*graphComponent.setPageVisible(true);
-    
-    Paper paper = new Paper();
-    paper.setSize((double)image.getIconWidth(), (double)image.getIconHeight());
-    graphComponent.getPageFormat().setPaper(paper);*/
     graphComponent.setBackgroundImage(image);
-    //graphComponent.setPageScale(1.0);
-    //getContentPane().add(graphComponent, BorderLayout.CENTER);
-    
 
   }
 
