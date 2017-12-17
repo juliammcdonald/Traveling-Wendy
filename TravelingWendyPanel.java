@@ -10,12 +10,12 @@ import com.mxgraph.view.mxGraph;
 public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
   /* Instance variables */
   JLabel selectLabel, mapLabel, resultLabel;
-  WendyGraph GRAPH;
+  WendyGraph wendyGraph;
   
   /* Constructor */  
   public TravelingWendyPanel(){
     
-    GRAPH = new WendyGraph( "wellesleycoord.txt" );
+    wendyGraph = new WendyGraph( "wellesleycoord.txt" );
     /*Extract all longitudes*/
     
     
@@ -38,13 +38,24 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     /* From ClickHandler.java */
     final mxGraph graph = new mxGraph();
     Object parent = graph.getDefaultParent();
-    
+ 
     graph.getModel().beginUpdate();
-    Object v1 = graph.insertVertex(parent, null, "Hello", 20, 20, 80,
-                                   30);
-    Object v2 = graph.insertVertex(parent, null, "World!",
-                                   640, 400, 80, 30);
-    graph.insertEdge(parent, null, "Edge", v1, v2);  
+    
+    int[] pixelCoors = new int[2];
+    for (Node vertex : wendyGraph.vertices){
+      pixelCoors = wendyGraph.getPixelCoordinates( Math.abs(vertex.getLat()), 
+                                                   Math.abs(vertex.getLon()),
+                                                   750,
+                                                   520);
+      System.out.printf("[%d, %d]\n",pixelCoors[0],pixelCoors[1]);
+      graph.insertVertex(parent, null, vertex.getName(), pixelCoors[0], pixelCoors[1], 30, 30);
+    }
+        
+//    Object v1 = graph.insertVertex(parent, null, "Hello", 20, 20, 80,
+//                                   30);
+//    Object v2 = graph.insertVertex(parent, null, "World!",
+//                                   640, 400, 80, 30);
+//    graph.insertEdge(parent, null, "Edge", v1, v2);  
     graph.getModel().endUpdate();    
     
     final mxGraphComponent graphComponent = new mxGraphComponent(graph);
@@ -69,9 +80,7 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     add(selectLabel, gc);
     gc.gridy = 2;
     add(resultLabel, gc);
-   
-    
-
   }
+  
   
 }

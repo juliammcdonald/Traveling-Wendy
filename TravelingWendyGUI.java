@@ -12,7 +12,7 @@ public class TravelingWendyGUI {
     //frame.setMaximumSize(new java.awt.Dimension(480, 360));
     //frame.setMinimumSize(new java.awt.Dimension(480, 360));
     frame.setPreferredSize(new java.awt.Dimension(750, 520));
-    frame.setResizable(false);
+    //frame.setResizable(false);
        
     TravelingWendyPanel panel = new TravelingWendyPanel();
     frame.getContentPane().add(panel);

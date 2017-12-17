@@ -5,6 +5,7 @@ import javafoundations.*;
  * Creates a Graph of Nodes and Edges. This is a weighted adjacency list graph.
  */
 public class WendyGraph {
+  /* Later: change to private? */
   public ArrayList<Node> vertices;
   public ArrayList<LinkedList<Edge>> edges;
   public Double[] latitudes; public Double[] longitudes;
@@ -153,10 +154,10 @@ public class WendyGraph {
   }-------------------*/
  
   
-  /* @return */
+  /* @return int[x, y]*/
   public int[] getPixelCoordinates(double lat, double lon, int mapWidth, int mapHeight){
 
-    System.out.printf("maxLong:%f minLong:%f maxLat:%f minLat:%f\n", maxLong, minLong, maxLat, minLat);
+    //System.out.printf("maxLong:%f minLong:%f maxLat:%f minLat:%f\n", maxLong, minLong, maxLat, minLat);
     
     /* Brute force handling of floating point precision */
     Double spanLong = (maxLong - minLong) * 10E5;
@@ -172,13 +173,15 @@ public class WendyGraph {
   public static void main( String[] args ) {
     WendyGraph w = new WendyGraph( "wellesleycoord.txt" );
 
-    System.out.println(w.getPixelCoordinates(42.29449, 71.30, 750, 520)[0] + " " + 
-                       w.getPixelCoordinates(42.29449, 71.30, 750, 520)[1]);
-    System.out.println(w.getPixelCoordinates(42.29450, 71.30, 750, 520)[0] + " " + 
-                       w.getPixelCoordinates(42.29450, 71.30, 750, 520)[1]);
-    System.out.println(w.getPixelCoordinates(42.29455, 71.30, 750, 520)[0] + " " + 
-                       w.getPixelCoordinates(42.29455, 71.30, 750, 520)[1]);
-    System.out.println(w.getPixelCoordinates(42.29456, 71.30, 750, 520)[0] + " " + 
-                       w.getPixelCoordinates(42.29456, 71.30, 750, 520)[1]);
+//    System.out.println(w.getPixelCoordinates(42.29449, 71.30, 750, 520)[0] + " " + 
+//                       w.getPixelCoordinates(42.29449, 71.30, 750, 520)[1]);
+//    System.out.println(w.getPixelCoordinates(42.29450, 71.30, 750, 520)[0] + " " + 
+//                       w.getPixelCoordinates(42.29450, 71.30, 750, 520)[1]);
+//    System.out.println(w.getPixelCoordinates(42.29455, 71.30, 750, 520)[0] + " " + 
+//                       w.getPixelCoordinates(42.29455, 71.30, 750, 520)[1]);
+//    System.out.println(w.getPixelCoordinates(42.29456, 71.30, 750, 520)[0] + " " + 
+//                       w.getPixelCoordinates(42.29456, 71.30, 750, 520)[1]);
+    
+    System.out.println(w);
   }
 }
