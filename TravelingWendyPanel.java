@@ -15,6 +15,8 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
   /* Instance variables */
   JLabel selectLabel, mapLabel, resultLabel;
   WendyGraph wendyGraph;
+  static final int graphViewportWidth = 940;
+  static final int graphViewportHeight = 700;
   
   /* Constructor */  
   public TravelingWendyPanel(){
@@ -67,8 +69,8 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     for (Node vertex : wendyGraph.vertices){
       pixelCoors = wendyGraph.getPixelCoordinates( Math.abs(vertex.getLat()), 
                                                    Math.abs(vertex.getLon()),
-                                                   960,
-                                                   720);
+                                                   graphViewportWidth,
+                                                   graphViewportHeight);
       System.out.printf("Plotting: [%d, %d]\n",pixelCoors[0],pixelCoors[1]);      
       
       Object v;
