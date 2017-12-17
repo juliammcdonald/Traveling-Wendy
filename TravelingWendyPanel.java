@@ -51,7 +51,6 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     /*----------Create vertex stylesheets----------*/
     mxStylesheet stylesheet = graph.getStylesheet();
     Hashtable<String, Object> style = new Hashtable<String, Object>();
-    style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_CYLINDER);
     style.put(mxConstants.STYLE_FONTCOLOR, "#000000");
     style.put(mxConstants.STYLE_OPACITY, 75);
     style.put(mxConstants.STYLE_FONTSTYLE, mxConstants.FONT_BOLD);
@@ -82,7 +81,7 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
       if (vertex.getisBuilding()){
         v = graph.insertVertex(parent, null, vertex.getName(), 
                          pixelCoors[0], pixelCoors[1], 
-                         vertex.getName().length() * 10, 30,
+                         vertex.getName().length() * 10 - 10, 20,
                                       "BUILDING");
       } else { //intersection
         v = graph.insertVertex(parent, null, vertex.getName(), 
