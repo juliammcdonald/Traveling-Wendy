@@ -83,9 +83,9 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
                          vertex.getName().length() * 10, 30,
                                       "BUILDING");
       } else { //intersection
-        v = graph.insertVertex(parent, null, "", 
+        v = graph.insertVertex(parent, null, vertex.getName(), 
                          pixelCoors[0], pixelCoors[1], 
-                         10, 10,
+                         15, 15,
                                "INTERSECTION");
       }
       
@@ -99,8 +99,9 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
         Node n2 = e.getNode2();
         int index2 = wendyGraph.vertices.indexOf(n2);
         
-        graph.insertEdge(parent, null, e.getLengthFormatted(), 
-                         vertexObjects.get(index1), vertexObjects.get(index2));
+        graph.insertEdge(parent, null, /*e.getLengthFormatted(),*/ "", 
+                         vertexObjects.get(index1), vertexObjects.get(index2),
+        "endArrow=None;");
         System.out.printf("Drawing edge. . .\n");
       }
     }       
@@ -112,25 +113,32 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     add(graphComponent, gc);  
     
     /*----------Clickable cells----------*/
+    final String[] selectedNodes = new String[2];
+    
     graphComponent.getGraphControl().addMouseListener(new MouseAdapter(){      
       public void mouseReleased(MouseEvent e){
-        Object cell = graphComponent.getCellAt(e.getX(), e.getY());        
+        Object cell = graphComponent.getCellAt(e.getX(), e.getY());
+        
         if ((cell != null) || (!originSelected) || (!destinationSelected)) {
           System.out.println("cell="+graph.getLabel(cell));
-          if ( originSelected == false ){
+          
+          if ( originSelected == false ){            
             originSelected = true;
+            selectedNodes[0] = graph.getLabel(cell);
             selectLabel.setText("Select destination");
             graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "red", new Object[]{cell});
             
           } else if ( destinationSelected == false ){ //origin is already selected
             destinationSelected = true;
+            selectedNodes[1] = graph.getLabel(cell);
             graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "red", new Object[]{cell});
             graphComponent.refresh();
             selectLabel.setText("Calculating. . .");
             
             /*----------Call Dijkstra ----------*/
+            ArrayList<Node> shortestPath = wendyGraph.runDijkstra(selectedNodes[0], selectedNodes[1]);
+            selectLabel.setText("The shortest path is: "+ shortestPath.toString());
             
-            selectLabel.setText("The shortest path is: ");
           }
         }
       }
