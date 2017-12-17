@@ -1,0 +1,9 @@
+graph.setCellsEditable(false);
+    graph.setAllowDanglingEdges(false);
+    graph.setAllowLoops(false);
+    graph.setCellsDeletable(false);
+    graph.setCellsCloneable(false);
+    graph.setCellsDisconnectable(false);
+    graph.setDropEnabled(false);
+    graph.setSplitEnabled(false);
+    graph.setCellsBendable(false);

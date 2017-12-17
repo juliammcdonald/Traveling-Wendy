@@ -37,6 +37,7 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     
     /* From ClickHandler.java */
     final mxGraph graph = new mxGraph();
+
     Object parent = graph.getDefaultParent();
  
     graph.getModel().beginUpdate();
@@ -45,8 +46,8 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     for (Node vertex : wendyGraph.vertices){
       pixelCoors = wendyGraph.getPixelCoordinates( Math.abs(vertex.getLat()), 
                                                    Math.abs(vertex.getLon()),
-                                                   750,
-                                                   520);
+                                                   960,
+                                                   720);
       System.out.printf("[%d, %d]\n",pixelCoors[0],pixelCoors[1]);
       graph.insertVertex(parent, null, vertex.getName(), pixelCoors[0], pixelCoors[1], 30, 30);
     }
@@ -59,6 +60,8 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     graph.getModel().endUpdate();    
     
     final mxGraphComponent graphComponent = new mxGraphComponent(graph);
+    graphComponent.setEnabled(false);
+
     /*graphComponent.setSize(480, 360);*/ 
 
     add(graphComponent, gc);  

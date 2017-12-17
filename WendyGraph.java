@@ -164,7 +164,7 @@ public class WendyGraph {
     Double spanLat = (maxLat - minLat) * 10E5;
         
     int[] pixelCoords = new int[2];
-    pixelCoords[0] = (int)Math.round(((lon*10E5 - minLong*10E5) / spanLong) * mapWidth);
+    pixelCoords[0] = (int)Math.round(((1 - (lon*10E5 - minLong*10E5) / spanLong)) * mapWidth);
     pixelCoords[1] = (int)Math.round(((lat*10E5 - minLat*10E5) / spanLat) * mapHeight);
     
     return pixelCoords;
