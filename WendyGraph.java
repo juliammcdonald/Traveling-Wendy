@@ -252,4 +252,5 @@ public class WendyGraph {
     w.printPath( "BATES" );
     w.printPath( "SCICTR" );
     w.printPath( "VILLE" );
+  }
 }
