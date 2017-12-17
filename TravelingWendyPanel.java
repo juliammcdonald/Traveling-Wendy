@@ -1,11 +1,15 @@
 /* */
+import java.util.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
 import com.mxgraph.swing.mxGraphComponent;
-import com.mxgraph.view.mxGraph;
+import com.mxgraph.view.*;
+import com.mxgraph.util.*;
+
 
 public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
   /* Instance variables */
@@ -37,21 +41,63 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     
     /* From ClickHandler.java */
     final mxGraph graph = new mxGraph();
-
     Object parent = graph.getDefaultParent();
- 
+    
+    /* Create vertex stylesheets */
+    mxStylesheet stylesheet = graph.getStylesheet();
+    Hashtable<String, Object> style = new Hashtable<String, Object>();
+    style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_CYLINDER);
+    style.put(mxConstants.STYLE_FONTCOLOR, "#000000");
+    style.put(mxConstants.STYLE_FONTSTYLE, mxConstants.FONT_BOLD);
+    style.put(mxConstants.STYLE_GRADIENTCOLOR, mxUtils.getHexColorString(Color.BLUE));
+    style.put(mxConstants.STYLE_GRADIENT_DIRECTION, mxConstants.DIRECTION_NORTH); 
+    style.put(mxConstants.STYLE_GRADIENTCOLOR, mxUtils.getHexColorString(Color.WHITE));
+    stylesheet.putCellStyle("BUILDING", style);
+    
+    Hashtable<String, Object> style2 = new Hashtable<String, Object>();
+    style2.put(mxConstants.STYLE_OPACITY, 50);
+    style2.put(mxConstants.STYLE_FONTCOLOR, "#000000");
+    stylesheet.putCellStyle("INTERSECTION", style2);
+    
     graph.getModel().beginUpdate();
     
+    /* Plot all vertices */    
+    Vector<Object> vertexObjects = new Vector<Object>(wendyGraph.vertices.size());
     int[] pixelCoors = new int[2];
     for (Node vertex : wendyGraph.vertices){
       pixelCoors = wendyGraph.getPixelCoordinates( Math.abs(vertex.getLat()), 
                                                    Math.abs(vertex.getLon()),
                                                    960,
                                                    720);
-      System.out.printf("[%d, %d]\n",pixelCoors[0],pixelCoors[1]);
-      graph.insertVertex(parent, null, vertex.getName(), 
+      System.out.printf("Plotting: [%d, %d]\n",pixelCoors[0],pixelCoors[1]);      
+      
+      Object v;
+      if (vertex.getisBuilding()){
+        v = graph.insertVertex(parent, null, vertex.getName(), 
                          pixelCoors[0], pixelCoors[1], 
-                         vertex.getName().length() * 8, 25);
+                         vertex.getName().length() * 10, 30,
+                                      "BUILDING");
+      } else { //intersection
+        v = graph.insertVertex(parent, null, vertex.getName(), 
+                         pixelCoors[0], pixelCoors[1], 
+                         20, 20,
+                               "INTERSECTION");
+      }
+      
+      vertexObjects.add( v );
+    }
+    /* Draw all edges */
+    for (LinkedList<Edge> edgeList : wendyGraph.edges){
+      for (Edge e : edgeList){
+        Node n1 = e.getNode1();
+        int index1 = wendyGraph.vertices.indexOf(n1);
+        Node n2 = e.getNode2();
+        int index2 = wendyGraph.vertices.indexOf(n2);
+        
+        graph.insertEdge(parent, null, e.getLengthFormatted(), 
+                         vertexObjects.get(index1), vertexObjects.get(index2));
+        System.out.printf("Drawing edge. . .\n");
+      }
     }
         
 //    Object v1 = graph.insertVertex(parent, null, "Hello", 20, 20, 80,
@@ -74,6 +120,7 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
         Object cell = graphComponent.getCellAt(e.getX(), e.getY());        
         if (cell != null){
           System.out.println("cell="+graph.getLabel(cell));
+          graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "red", new Object[]{cell});
         }
       }
     });
