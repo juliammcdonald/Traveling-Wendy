@@ -49,7 +49,9 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
                                                    960,
                                                    720);
       System.out.printf("[%d, %d]\n",pixelCoors[0],pixelCoors[1]);
-      graph.insertVertex(parent, null, vertex.getName(), pixelCoors[0], pixelCoors[1], 30, 30);
+      graph.insertVertex(parent, null, vertex.getName(), 
+                         pixelCoors[0], pixelCoors[1], 
+                         vertex.getName().length() * 8, 25);
     }
         
 //    Object v1 = graph.insertVertex(parent, null, "Hello", 20, 20, 80,
