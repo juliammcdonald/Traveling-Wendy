@@ -19,7 +19,8 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
   private WendyGraph wendyGraph;
   private String[] selectedNodes;
   private Object[] coloredCells;
-  private mxGraph graph; private Object parent; //necessary for mxGraph function
+  private mxGraph graph; private Object parent; private mxGraphComponent graphComponent;
+//necessary for mxGraph function
 
   
   /*----------Constructor----------*/  
@@ -108,7 +109,7 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     }       
     graph.getModel().endUpdate();    
     
-    final mxGraphComponent graphComponent = new mxGraphComponent(graph);
+    graphComponent = new mxGraphComponent(graph);
     graphComponent.setEnabled(false);
 
     add(graphComponent, gc);  
@@ -120,7 +121,7 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
         
         if ((cell != null) || (selectedNodes[0] == null) || (selectedNodes[1] == null)) {
           System.out.println("cell="+graph.getLabel(cell));
-          
+          System.out.printf("selectedNodes: %s %s\n", selectedNodes[0], selectedNodes[1]);
           if ( selectedNodes[0] == null ){            
             selectedNodes[0] = graph.getLabel(cell);
             selectLabel.setText("Select destination");
@@ -153,15 +154,13 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
             graph.getModel().beginUpdate();
             try {
               for (j = 0; j < (coloredCells.length - 1); j++){
-                Object edge = graph.getEdgesBetween(coloredCells[j], coloredCells[j+1]);
-                System.out.println(edge);
-                graph.getModel().remove(edge);
-//                graph.insertEdge(parent, null, "", 
-//                                 coloredCells[j], coloredCells[j+1],
-//                                 "endArrow=None;strokeColor=red;strokeWidth=4");
+                Object[] edge = graph.getEdgesBetween(coloredCells[j], coloredCells[j+1]);
+                graph.setCellStyles(mxConstants.STYLE_STROKECOLOR, "red", edge);
+                graph.setCellStyles(mxConstants.STYLE_STROKEWIDTH, "4", edge);
               }
             } finally {
               graph.getModel().endUpdate();
+              graphComponent.refresh();
             }
           }
         }
@@ -193,18 +192,23 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
       if (e.getSource() == resetButton){           
         selectLabel.setText("Select origin");
         
-        graph.getModel().beginUpdate();
-        
+        /*----------Reset colored paths-------*/
+        graph.getModel().beginUpdate();        
         try {
           for (int j = 0; j < (coloredCells.length - 1); j++){
-            Object edge = graph.getEdgesBetween(coloredCells[j], coloredCells[j+1]);
-            graph.getModel().remove( edge);
-            graph.insertEdge(parent, null, "", 
-                             coloredCells[j], coloredCells[j+1],
-                             "endArrow=None;");
+            Object[] edge = graph.getEdgesBetween(coloredCells[j], coloredCells[j+1]);
+            graph.setCellStyles(mxConstants.STYLE_STROKECOLOR, "", edge);
+            graph.setCellStyles(mxConstants.STYLE_STROKEWIDTH, "1", edge);
           }
+          graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "", coloredCells);
+          graph.setCellStyles(mxConstants.STYLE_STROKECOLOR, "", coloredCells);
+          
+          coloredCells = null;
+          selectedNodes = new String[2];
+
         } finally {
           graph.getModel().endUpdate();
+          graphComponent.refresh();
         }
       }
     }
