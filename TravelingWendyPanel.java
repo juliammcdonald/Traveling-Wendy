@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
+import java.awt.print.Paper;
 
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.*;
@@ -19,9 +20,9 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
   private WendyGraph wendyGraph;
   private String[] selectedNodes;
   private Object[] coloredCells;
+
   private mxGraph graph; private Object parent; private mxGraphComponent graphComponent;
 //necessary for mxGraph function
-
   
   /*----------Constructor----------*/  
   public TravelingWendyPanel(int graphViewportWidth, int graphViewportHeight){
@@ -51,7 +52,6 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     /*----------Create vertex stylesheets----------*/
     mxStylesheet stylesheet = graph.getStylesheet();
     Hashtable<String, Object> style = new Hashtable<String, Object>();
-    style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_CYLINDER);
     style.put(mxConstants.STYLE_FONTCOLOR, "#000000");
     style.put(mxConstants.STYLE_OPACITY, 75);
     style.put(mxConstants.STYLE_FONTSTYLE, mxConstants.FONT_BOLD);
@@ -82,7 +82,7 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
       if (vertex.getisBuilding()){
         v = graph.insertVertex(parent, null, vertex.getName(), 
                          pixelCoors[0], pixelCoors[1], 
-                         vertex.getName().length() * 10, 30,
+                         vertex.getName().length() * 10 - 10, 20,
                                       "BUILDING");
       } else { //intersection
         v = graph.insertVertex(parent, null, vertex.getName(), 
@@ -179,13 +179,20 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     resetButton.addActionListener(new ButtonListener());
     
 
-    /*
-    ImageIcon image = getBackgroundImage();
+    /*----------Set and Scale Background *written by Julia*----------*/
+    ImageIcon image = new ImageIcon("wellesleyBG3.png");
+    /*graphComponent.setPageVisible(true);
+    
+    Paper paper = new Paper();
+    paper.setSize((double)image.getIconWidth(), (double)image.getIconHeight());
+    graphComponent.getPageFormat().setPaper(paper);*/
     graphComponent.setBackgroundImage(image);
-    graphComponent.setPageScale(double);*/
+    //graphComponent.setPageScale(1.0);
+    //getContentPane().add(graphComponent, BorderLayout.CENTER);
+    
 
   }
-  
+
   /*----------Button handler----------*/
   private class ButtonListener implements ActionListener {
     public void actionPerformed(ActionEvent e){
@@ -213,11 +220,4 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
       }
     }
   }
-  
-  
-  //Paper paper = new Paper();
-  //paper.setSize(image.getIconWidth(), image.getIconHeight());
-  //graphComponent.getPageFormat().setPaper(paper);
-  
-  
 }
