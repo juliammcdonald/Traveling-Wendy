@@ -16,19 +16,15 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
   /*----------Instance variables----------*/
   private JLabel selectLabel, mapLabel;
   private WendyGraph wendyGraph;
-  private static final int graphViewportWidth = 940;
-  private static final int graphViewportHeight = 700;
-  private boolean originSelected;
-  private boolean destinationSelected;
+  private String[] selectedNodes;
 
   
   /*----------Constructor----------*/  
-  public TravelingWendyPanel(){
+  public TravelingWendyPanel(int graphViewportWidth, int graphViewportHeight){
     
     wendyGraph = new WendyGraph( "wellesleycoord.txt" );
     
-    originSelected = false;
-    destinationSelected = false;
+    selectedNodes = new String[2];
 
     selectLabel = new JLabel("Select origin");    
 
@@ -112,24 +108,20 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
 
     add(graphComponent, gc);  
     
-    /*----------Clickable cells----------*/
-    final String[] selectedNodes = new String[2];
-    
+    /*----------Clickable cells----------*/  
     graphComponent.getGraphControl().addMouseListener(new MouseAdapter(){      
       public void mouseReleased(MouseEvent e){
         Object cell = graphComponent.getCellAt(e.getX(), e.getY());
         
-        if ((cell != null) || (!originSelected) || (!destinationSelected)) {
+        if ((cell != null) || (selectedNodes[0].equals("")) || (selectedNodes[1].equals(""))) {
           System.out.println("cell="+graph.getLabel(cell));
           
-          if ( originSelected == false ){            
-            originSelected = true;
+          if ( selectedNodes[0].equals("") ){            
             selectedNodes[0] = graph.getLabel(cell);
             selectLabel.setText("Select destination");
             graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "red", new Object[]{cell});
             
-          } else if ( destinationSelected == false ){ //origin is already selected
-            destinationSelected = true;
+          } else if ( selectedNodes[1].equals("") ){ //origin is already selected
             selectedNodes[1] = graph.getLabel(cell);
             graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "red", new Object[]{cell});
             graphComponent.refresh();
