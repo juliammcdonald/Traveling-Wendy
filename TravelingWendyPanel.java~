@@ -15,8 +15,8 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
   /* Instance variables */
   JLabel selectLabel, mapLabel, resultLabel;
   WendyGraph wendyGraph;
-  static final int graphViewportWidth = 1200;
-  static final int graphViewportHeight = 600;
+  static final int graphViewportWidth = 940;
+  static final int graphViewportHeight = 700;
   
   /* Constructor */  
   public TravelingWendyPanel(){
@@ -134,16 +134,7 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     add(selectLabel, gc);
     gc.gridy = 2;
     add(resultLabel, gc);
-    /*
-    ImageIcon image = getBackgroundImage();
-    graphComponent.setBackgroundImage(image);
-    graphComponent.setPageScale(double);*/
   }
-  
-  
-  //Paper paper = new Paper();
-  //paper.setSize(image.getIconWidth(), image.getIconHeight());
-  //graphComponent.getPageFormat().setPaper(paper);
   
   
 }
