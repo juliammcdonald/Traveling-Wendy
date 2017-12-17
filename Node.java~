@@ -32,6 +32,23 @@ public class Node implements Comparable<Node>{
     return latitude;
   }
   
+  public void printPath()
+  {
+    if (this == this.prev)
+    {
+      System.out.print(this.name);
+    }
+    else if (this.prev == null)
+    {
+      System.out.print(this.name + "(unreached)");
+    }
+    else
+    {
+      this.prev.printPath();
+      System.out.print(" -> " + this.name + "(" + this.weight + ")");
+    }
+  }
+  
   public double getLon() {
     return longitude;
   }

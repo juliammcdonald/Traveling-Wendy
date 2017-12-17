@@ -226,38 +226,21 @@ public class WendyGraph {
     }
   }
   
-  public ArrayList<Node> getPath( String endName ) {
+  public void printPath( String endName ) {
     if( findNodeIndex( endName ) == -1 ) {
       System.err.println( "Enter a valid endName" );
-      return null;
+      return;
     }
     
-    ArrayList<Node> path = new ArrayList<Node>();
-    
-    path.add( vertices.get( findNodeIndex( endName ) ) );
-    
-    while( path.get( path.size() - 1 ).getPrev() != null && 
-          path.get( path.size() - 1 ).getPrev() != path.get( path.size() - 1 )) {
-      path.add( path.get(path.size() - 1).getPrev() );
-    }
-    
-    Collections.reverse( path );
-    return path;
+    vertices.get( findNodeIndex( endName ) ).printPath();
+    System.out.println();
   }
   
-  public ArrayList<ArrayList<Node>> printAllPaths() {
-    ArrayList<ArrayList<Node>> allPaths = new ArrayList<ArrayList<Node>>();
-    
+  public void printAllPaths() {
     for( Node n: vertices ) {
-      allPaths.add( getPath( n.getName() ) );
+      n.printPath();
+      System.out.println();
     }
-    
-    return allPaths;
-  }
-  
-  public ArrayList<Node> runDijkstra( String startName, String endName ) {
-    dijkstra( startName );
-    return getPath( endName );
   }
   
   public static void main( String[] args ) {
@@ -266,8 +249,8 @@ public class WendyGraph {
     
     w.dijkstra( "EASTENTRY" );
 
-    System.out.println( w.getPath( "BATES" ) );
-    System.out.println( w.getPath( "SCICTR" ) );
-   System.out.println(  w.getPath( "VILLE" ) );
+    w.printPath( "BATES" );
+    w.printPath( "SCICTR" );
+    w.printPath( "VILLE" );
   }
 }
