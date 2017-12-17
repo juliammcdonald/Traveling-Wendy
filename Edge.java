@@ -57,6 +57,12 @@ public class Edge {
     return node2;
   }
   
+  public Node getOtherNode( Node known ) {
+    if( known.equals( node1 ) )
+      return node2;
+    return node1;
+  }
+  
   public String toString() {
     return "(" + node1 + ", " + node2 + ")";
   }
