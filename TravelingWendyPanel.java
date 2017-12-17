@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
+import java.awt.print.Paper;
 
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.*;
@@ -16,8 +17,8 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
   /*----------Instance variables----------*/
   private JLabel selectLabel, mapLabel;
   private WendyGraph wendyGraph;
-  private static final int graphViewportWidth = 940;
-  private static final int graphViewportHeight = 700;
+  private static final int graphViewportWidth = 825;
+  private static final int graphViewportHeight = 600;
   private boolean originSelected;
   private boolean destinationSelected;
 
@@ -151,17 +152,20 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     add(selectLabel, gc);
 
 
-    /*
-    ImageIcon image = getBackgroundImage();
+    /*----------Set and Scale Background *written by Julia*----------*/
+    ImageIcon image = new ImageIcon("wellesleyBG3.png");
+    /*graphComponent.setPageVisible(true);
+    
+    Paper paper = new Paper();
+    paper.setSize((double)image.getIconWidth(), (double)image.getIconHeight());
+    graphComponent.getPageFormat().setPaper(paper);*/
     graphComponent.setBackgroundImage(image);
-    graphComponent.setPageScale(double);*/
+    //graphComponent.setPageScale(1.0);
+    //getContentPane().add(graphComponent, BorderLayout.CENTER);
+    
 
   }
-  
-  
-  //Paper paper = new Paper();
-  //paper.setSize(image.getIconWidth(), image.getIconHeight());
-  //graphComponent.getPageFormat().setPaper(paper);
+
   
   
 }

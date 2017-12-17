@@ -1,10 +1,12 @@
-/* */
+/*----------*/
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
+import java.awt.print.Paper;
 
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.*;
@@ -12,40 +14,42 @@ import com.mxgraph.util.*;
 
 
 public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
-  /* Instance variables */
-  JLabel selectLabel, mapLabel, resultLabel;
-  WendyGraph wendyGraph;
-  static final int graphViewportWidth = 940;
-  static final int graphViewportHeight = 700;
+  /*----------Instance variables----------*/
+  private JLabel selectLabel, mapLabel;
+  private WendyGraph wendyGraph;
+  private static final int graphViewportWidth = 1000;
+  private static final int graphViewportHeight = 600;
+  private boolean originSelected;
+  private boolean destinationSelected;
+
   
-  /* Constructor */  
+  /*----------Constructor----------*/  
   public TravelingWendyPanel(){
     
     wendyGraph = new WendyGraph( "wellesleycoord.txt" );
-    /*Extract all longitudes*/
     
-    
-    /* [TODO] Dynamic label: set to select destination after click */
-    selectLabel = new JLabel("Select origin building");
-    
-    resultLabel = new JLabel("The shortest path is: ");
+    originSelected = false;
+    destinationSelected = false;
+
+    selectLabel = new JLabel("Select origin");    
+
     mapLabel = new JLabel("This is the map placeholder XD");
     
     setLayout(new GridBagLayout());
     GridBagConstraints gc = new GridBagConstraints();
     
-    /* Map component*/    
+    /*----------Map component---------*/    
     gc.weightx = 0.5;
     gc.weighty = 0.5;
     
     gc.gridx = 0;
     gc.gridy= 0;
     
-    /* From ClickHandler.java */
+    /*----------From ClickHandler.java----------*/
     final mxGraph graph = new mxGraph();
     Object parent = graph.getDefaultParent();
     
-    /* Create vertex stylesheets */
+    /*----------Create vertex stylesheets----------*/
     mxStylesheet stylesheet = graph.getStylesheet();
     Hashtable<String, Object> style = new Hashtable<String, Object>();
     style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_CYLINDER);
@@ -63,7 +67,7 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     
     graph.getModel().beginUpdate();
     
-    /* Plot all vertices */    
+    /*----------Plot all vertices----------*/    
     Vector<Object> vertexObjects = new Vector<Object>(wendyGraph.vertices.size());
     int[] pixelCoors = new int[2];
     for (Node vertex : wendyGraph.vertices){
@@ -82,13 +86,13 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
       } else { //intersection
         v = graph.insertVertex(parent, null, vertex.getName(), 
                          pixelCoors[0], pixelCoors[1], 
-                         20, 20,
+                         15, 15,
                                "INTERSECTION");
       }
       
       vertexObjects.add( v );
     }
-    /* Draw all edges */
+    /*----------Draw all edges----------*/
     for (LinkedList<Edge> edgeList : wendyGraph.edges){
       for (Edge e : edgeList){
         Node n1 = e.getNode1();
@@ -96,45 +100,72 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
         Node n2 = e.getNode2();
         int index2 = wendyGraph.vertices.indexOf(n2);
         
-        graph.insertEdge(parent, null, e.getLengthFormatted(), 
-                         vertexObjects.get(index1), vertexObjects.get(index2));
+        graph.insertEdge(parent, null, /*e.getLengthFormatted(),*/ "", 
+                         vertexObjects.get(index1), vertexObjects.get(index2),
+        "endArrow=None;");
         System.out.printf("Drawing edge. . .\n");
       }
-    }
-        
-//    Object v1 = graph.insertVertex(parent, null, "Hello", 20, 20, 80,
-//                                   30);
-//    Object v2 = graph.insertVertex(parent, null, "World!",
-//                                   640, 400, 80, 30);
-//    graph.insertEdge(parent, null, "Edge", v1, v2);  
+    }       
     graph.getModel().endUpdate();    
     
     final mxGraphComponent graphComponent = new mxGraphComponent(graph);
     graphComponent.setEnabled(false);
 
-    /*graphComponent.setSize(480, 360);*/ 
-
     add(graphComponent, gc);  
     
-    /* Clickable cells */
+    /*----------Clickable cells----------*/
+    final String[] selectedNodes = new String[2];
+    
     graphComponent.getGraphControl().addMouseListener(new MouseAdapter(){      
       public void mouseReleased(MouseEvent e){
-        Object cell = graphComponent.getCellAt(e.getX(), e.getY());        
-        if (cell != null){
+        Object cell = graphComponent.getCellAt(e.getX(), e.getY());
+        
+        if ((cell != null) || (!originSelected) || (!destinationSelected)) {
           System.out.println("cell="+graph.getLabel(cell));
-          graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "red", new Object[]{cell});
+          
+          if ( originSelected == false ){            
+            originSelected = true;
+            selectedNodes[0] = graph.getLabel(cell);
+            selectLabel.setText("Select destination");
+            graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "red", new Object[]{cell});
+            
+          } else if ( destinationSelected == false ){ //origin is already selected
+            destinationSelected = true;
+            selectedNodes[1] = graph.getLabel(cell);
+            graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "red", new Object[]{cell});
+            graphComponent.refresh();
+            selectLabel.setText("Calculating. . .");
+            
+            /*----------Call Dijkstra ----------*/
+            ArrayList<Node> shortestPath = wendyGraph.runDijkstra(selectedNodes[0], selectedNodes[1]);
+            selectLabel.setText("The shortest path is: "+ shortestPath.toString());
+            
+          }
         }
       }
     });
     
-    /* Display labels */
+    /*----------Display labels----------*/
     gc.weighty = 0.01;    
     gc.anchor = GridBagConstraints.NORTH;
     gc.gridy = 1;
     add(selectLabel, gc);
-    gc.gridy = 2;
-    add(resultLabel, gc);
+
+
+    /*----------Set and Scale Background *written by Julia*----------*/
+    ImageIcon image = new ImageIcon("wellesleyBG3.png");
+    /*graphComponent.setPageVisible(true);
+    
+    Paper paper = new Paper();
+    paper.setSize((double)image.getIconWidth(), (double)image.getIconHeight());
+    graphComponent.getPageFormat().setPaper(paper);*/
+    graphComponent.setBackgroundImage(image);
+    //graphComponent.setPageScale(1.0);
+    //getContentPane().add(graphComponent, BorderLayout.CENTER);
+    
+
   }
+
   
   
 }
