@@ -1,8 +1,9 @@
+/*****************************************************************
+  * Edge.java
+ * Creates a weighted Edge between two Nodes
+ ****************************************************************/
 import java.text.DecimalFormat;
 
-/**
- * Creates a weighted Edge between two Nodes
- */
 public class Edge {
   
   protected double length;

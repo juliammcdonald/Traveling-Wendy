@@ -1,10 +1,12 @@
+/*****************************************************************
+  * WendyGraph.java
+ * Creates a Graph of Nodes and Edges. This is a weighted adjacency list graph.
+ ****************************************************************/
+
 import java.util.*;
 import java.io.*;
 import javafoundations.*;
 
-/**
- * Creates a Graph of Nodes and Edges. This is a weighted adjacency list graph.
- */
 public class WendyGraph {
   /* Later: change to private? */
   public ArrayList<Node> vertices;
