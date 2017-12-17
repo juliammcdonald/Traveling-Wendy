@@ -8,12 +8,15 @@ import java.io.*;
 import javafoundations.*;
 
 public class WendyGraph {
-  /* Later: change to private? */
+  
   public ArrayList<Node> vertices;
   public ArrayList<LinkedList<Edge>> edges;
   public Double[] latitudes; public Double[] longitudes;
   public Double maxLong, minLong, maxLat, minLat;
   
+  /* --------------Constructor @Julia------------------
+   * @param fileName - name of textfile containing latitude and longitude data.
+  */
   public WendyGraph( String fileName ) {
     vertices = new ArrayList<Node>();
     edges = new ArrayList<LinkedList<Edge>>();
@@ -78,15 +81,23 @@ public class WendyGraph {
     }
   }
   
+  /* Adds a node to the vertices.
+   * @param n - the new node. */
   public void addNode( Node n ) {
     vertices.add( n );
   }
   
+  /* Adds an edge to the edges/
+   * @param e - the new edge */
   public void addEdge( Edge e ) {
     edges.get( findNodeIndex( e.getNode1() ) ).add( e );
     edges.get( findNodeIndex( e.getNode2() ) ).add( e );
   }
   
+  /* Find index of a node in vertices list.
+   * @param n - the node to be found 
+   * @return - the index of the node.
+   */
   private int findNodeIndex( Node n ) {
     for( int i = 0; i < vertices.size(); i++ ) {
       if( n.equals( vertices.get( i ) ))
@@ -95,6 +106,10 @@ public class WendyGraph {
     return -1;
   }
   
+  /* Find index of a node from the name of the node in vertices list.
+   * @param name - name of the node.
+   * @return - the index of the node.
+   */
   private int findNodeIndex( String name ) {
     for( int i = 0; i < vertices.size(); i++ ) {
       if( name.equals( vertices.get( i ).getName() ) )
@@ -104,6 +119,8 @@ public class WendyGraph {
     return -1;
   }
   
+  /* Prints a string representation of WendyGraph object.
+   * @return - the string. */
   public String toString() {
     String s = "";
     for( int i = 0; i < vertices.size(); i++ ) {
@@ -131,8 +148,7 @@ public class WendyGraph {
       i++;
     }
     return lats;
-  }
-  
+  }  
   public Double getLongitude(String type){    
     Sorting.quickSort(longitude, 0, longs.length - 1);
     if (type.equals("max")){     
@@ -140,8 +156,7 @@ public class WendyGraph {
     } else {//does not consider invalid input since not open to user
       return Math.abs(longs[longs.length - 1]); //min
     }
-  }
-  
+  }  
   public Double getLatitude(String type){
     Double[] lats = getAllLatitudes();
     Sorting.quickSort(lats, 0, lats.length - 1);
@@ -153,7 +168,12 @@ public class WendyGraph {
   }-------------------*/
  
   
-  /* @return int[x, y]*/
+  /* Converts latitude and longitude of a node into its appropriate location on graph of any size.
+   * @param lat - the latitude of the node.
+   * @param lon - the longitude of the node.
+   * @param mapWidth - the width of the graph viewport.
+   * @param mapHeight - the height of the graph viewport.
+   * @return - a integer array of x and y coordinates.*/
   public int[] getPixelCoordinates(double lat, double lon, int mapWidth, int mapHeight){
 
     //System.out.printf("maxLong:%f minLong:%f maxLat:%f minLat:%f\n", maxLong, minLong, maxLat, minLat);
@@ -169,8 +189,7 @@ public class WendyGraph {
     return pixelCoords;
   }
   
-
-
+  
   public void dijkstra( String sourceName ) {
     if( findNodeIndex( sourceName ) == -1 ) {
       System.err.println( "Enter a valid startName" );
@@ -262,6 +281,7 @@ public class WendyGraph {
     return getPath( endName );
   }
   
+  /* Testing driver.*/
   public static void main( String[] args ) {
     WendyGraph w = new WendyGraph( "wellesleycoord.txt" );
     //System.out.println( w );
