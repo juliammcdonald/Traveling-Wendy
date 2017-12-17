@@ -63,7 +63,7 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     graph.getModel().beginUpdate();
     
     /*----------Plot all vertices----------*/    
-    Vector<Object> vertexObjects = new Vector<Object>(wendyGraph.vertices.size());
+    final Vector<Object> vertexObjects = new Vector<Object>(wendyGraph.vertices.size());
     int[] pixelCoors = new int[2];
     for (Node vertex : wendyGraph.vertices){
       pixelCoors = wendyGraph.getPixelCoordinates( Math.abs(vertex.getLat()), 
@@ -108,20 +108,20 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
 
     add(graphComponent, gc);  
     
-    /*----------Clickable cells----------*/  
+    /*----------Clicking handler----------*/  
     graphComponent.getGraphControl().addMouseListener(new MouseAdapter(){      
       public void mouseReleased(MouseEvent e){
         Object cell = graphComponent.getCellAt(e.getX(), e.getY());
         
-        if ((cell != null) || (selectedNodes[0].equals("")) || (selectedNodes[1].equals(""))) {
+        if ((cell != null) || (selectedNodes[0] == null) || (selectedNodes[1] == null)) {
           System.out.println("cell="+graph.getLabel(cell));
           
-          if ( selectedNodes[0].equals("") ){            
+          if ( selectedNodes[0] == null ){            
             selectedNodes[0] = graph.getLabel(cell);
             selectLabel.setText("Select destination");
             graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "red", new Object[]{cell});
             
-          } else if ( selectedNodes[1].equals("") ){ //origin is already selected
+          } else if ( selectedNodes[1] == null ){ //origin is already selected, but not destination
             selectedNodes[1] = graph.getLabel(cell);
             graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "red", new Object[]{cell});
             graphComponent.refresh();
@@ -130,6 +130,15 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
             /*----------Call Dijkstra ----------*/
             ArrayList<Node> shortestPath = wendyGraph.runDijkstra(selectedNodes[0], selectedNodes[1]);
             selectLabel.setText("The shortest path is: "+ shortestPath.toString());
+            
+            Object[] colorCell = new Object[shortestPath.size()];
+            int j = 0;
+            for (Node n : shortestPath) {
+              int i = wendyGraph.vertices.indexOf(n);
+              colorCell[j] = vertexObjects.get(i);
+              j++;
+            }
+            graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "red", colorCell);
             
           }
         }
