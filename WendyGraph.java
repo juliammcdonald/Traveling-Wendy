@@ -1,6 +1,7 @@
 import java.util.*;
 import java.io.*;
 import javafoundations.*;
+
 /**
  * Creates a Graph of Nodes and Edges. This is a weighted adjacency list graph.
  */
@@ -170,18 +171,85 @@ public class WendyGraph {
     return pixelCoords;
   }
   
+
+
+  public void dijkstra( String sourceName ) {
+    if( findNodeIndex( sourceName ) == -1 ) {
+      System.err.println( "Enter a valid startName" );
+      return;
+    }
+    
+    Node source = vertices.get( findNodeIndex( sourceName ) );
+    
+    System.out.println( source );
+    NavigableSet<Node> q = new TreeSet<>();
+    
+    for( Node v : vertices ) {
+      v.setPrev( null );
+      if( v.getName().equals( sourceName ) )
+        v.setWeight( 0 );
+      else
+        v.setWeight( Double.MAX_VALUE );
+      q.add( v );
+    }
+    
+    //System.out.println( q );
+    
+    dijkstra(q);
+  }
+  
+  private void dijkstra( final NavigableSet<Node> q ) {
+    Node u, v;
+    //System.out.println( q );
+    while( !q.isEmpty() ) {
+      
+      //System.out.println("START: " + q );
+      u = q.pollFirst(); //node with the shortest distance
+      //System.out.println( u );
+      if( u.getWeight() == Double.MAX_VALUE) break; //we can ignore u because it is unreachable
+      
+      //distances to each neighbor
+      for( Edge e: edges.get( findNodeIndex( u ) ) ) {
+        v = e.getOtherNode( u );
+        
+        double altWeight = u.getWeight() + e.getLength();
+        
+        if( altWeight < v.getWeight() ) {
+          //System.out.println( "changing weight" );
+          q.remove( v );
+          v.setWeight( altWeight );
+          v.setPrev( u );
+          q.add( v );
+        }
+      }
+      //System.out.println( "END: " + q );
+    }
+  }
+  
+  public void printPath( String endName ) {
+    if( findNodeIndex( endName ) == -1 ) {
+      System.err.println( "Enter a valid endName" );
+      return;
+    }
+    
+    vertices.get( findNodeIndex( endName ) ).printPath();
+    System.out.println();
+  }
+  
+  public void printAllPaths() {
+    for( Node n: vertices ) {
+      n.printPath();
+      System.out.println();
+    }
+  }
+  
   public static void main( String[] args ) {
     WendyGraph w = new WendyGraph( "wellesleycoord.txt" );
-
-//    System.out.println(w.getPixelCoordinates(42.29449, 71.30, 750, 520)[0] + " " + 
-//                       w.getPixelCoordinates(42.29449, 71.30, 750, 520)[1]);
-//    System.out.println(w.getPixelCoordinates(42.29450, 71.30, 750, 520)[0] + " " + 
-//                       w.getPixelCoordinates(42.29450, 71.30, 750, 520)[1]);
-//    System.out.println(w.getPixelCoordinates(42.29455, 71.30, 750, 520)[0] + " " + 
-//                       w.getPixelCoordinates(42.29455, 71.30, 750, 520)[1]);
-//    System.out.println(w.getPixelCoordinates(42.29456, 71.30, 750, 520)[0] + " " + 
-//                       w.getPixelCoordinates(42.29456, 71.30, 750, 520)[1]);
+    //System.out.println( w );
     
-    System.out.println(w);
-  }
+    w.dijkstra( "EASTENTRY" );
+
+    w.printPath( "BATES" );
+    w.printPath( "SCICTR" );
+    w.printPath( "VILLE" );
 }
