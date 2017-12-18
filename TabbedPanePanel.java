@@ -42,8 +42,8 @@ public class TabbedPanePanel extends JPanel {
    */
   protected JComponent makeAboutPanel() {
     JPanel panel = new JPanel(false);
-    JLabel text1 = new JLabel("Welcome to Traveling Wendy!");
-    text1.setFont(new Font("Monospaced", Font.BOLD, 20));
+    JLabel text1 = new JLabel("FIND THE SHORTEST PATH BETWEEN TWO BUILDINGS AT WELLESLEY COLLEGE!");
+    text1.setFont(new Font("Monospaced", Font.BOLD, 24));
     text1.setBorder(new EmptyBorder(10,0,10,0));
 
     JLabel text2 = new JLabel("Instructions: Click on the \"Map\" pane and select your start and "
