@@ -38,7 +38,7 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     wendyGraph = new WendyGraph( "wellesleycoord.txt" );    
     selectedNodes = new String[2];    
     selectLabel = new JLabel("Select origin");
-    selectLabel.setFont(new Font("Monospaced", Font.BOLD, 20));
+    selectLabel.setFont(new Font("Monospaced", Font.BOLD, 14));
     mapLabel = new JLabel("This is the map placeholder");
     toggleDistance = true;
 
@@ -68,7 +68,7 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     
     Hashtable<String, Object> style2 = new Hashtable<String, Object>();
     style2.put(mxConstants.STYLE_OPACITY, 75);
-    style2.put(mxConstants.STYLE_FONTCOLOR, "#000000");
+    style2.put(mxConstants.STYLE_FONTCOLOR, "yellow");
     //style2.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_ELLIPSE);
     stylesheet.putCellStyle("INTERSECTION", style2);
     
@@ -94,7 +94,7 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
                                vertex.getName().length() * 10 - 10, 20,
                                "BUILDING");
       } else { //intersection
-        v = graph.insertVertex(parent, null, "", 
+        v = graph.insertVertex(parent, null, vertex.getName(), 
                                pixelCoors[0], pixelCoors[1], 
                                7, 7,
                                "INTERSECTION");
@@ -129,8 +129,14 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
       public void mouseReleased(MouseEvent e){
         Object cell = graphComponent.getCellAt(e.getX(), e.getY());
         
-        if ((cell != null) || (selectedNodes[0] == null) || (selectedNodes[1] == null)) {
+        if (isNumeric(graph.getLabel(cell).substring(0,1))){
+          System.out.println("Clicked on edge");
+        }
+        else if ( (cell != null)               
+              || (selectedNodes[0] == null) || (selectedNodes[1] == null)) {
+                    
           System.out.println("cell="+graph.getLabel(cell));
+          System.out.printf("IS NUMERIC: %b\n",isNumeric(graph.getLabel(cell).substring(0,1)));
           //System.out.printf("selectedNodes: %s %s\n", selectedNodes[0], selectedNodes[1]);
           
           /*----------Origin has not been selected-----------*/
@@ -252,6 +258,16 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
        }
       }
     }
+  }
+  
+  public static boolean isNumeric(String str)  
+  {  
+    try {  
+      double d = Double.parseDouble(str);  
+    } catch(NumberFormatException nfe) {  
+      return false;  
+    }  
+    return true;  
   }
 }
 
