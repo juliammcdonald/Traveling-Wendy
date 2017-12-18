@@ -88,7 +88,6 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
                                                   Math.abs(vertex.getLon()),
                                                   graphViewportWidth,
                                                   graphViewportHeight);
-      System.out.printf("Plotting: [%d, %d]\n",pixelCoors[0],pixelCoors[1]);      
       
       Object v;
       if (vertex.getisBuilding()){
@@ -114,9 +113,7 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
         
         graph.insertEdge(parent, null, e.getLengthFormatted(0), 
                          vertexObjects.get(index1), vertexObjects.get(index2),
-                         "endArrow=None;");
-        
-        System.out.printf("Drawing edge. . .\n");
+                         "endArrow=None;"); 
       }
     }
     
@@ -133,15 +130,10 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
         Object cell = graphComponent.getCellAt(e.getX(), e.getY());
         
         if (isNumeric(graph.getLabel(cell).substring(0,1))){
-          System.out.println("Clicked on edge");
+          //System.out.println("Clicked on edge");
         }
         else if ( (cell != null)               
               || (selectedNodes[0] == null) || (selectedNodes[1] == null)) {
-                    
-          System.out.println("cell="+graph.getLabel(cell));
-          System.out.printf("IS NUMERIC: %b\n",isNumeric(graph.getLabel(cell).substring(0,1)));
-          //System.out.printf("selectedNodes: %s %s\n", selectedNodes[0], selectedNodes[1]);
-          
           /*----------Origin has not been selected-----------*/
           if ( selectedNodes[0] == null ){            
             selectedNodes[0] = graph.getLabel(cell);

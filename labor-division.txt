@@ -1,10 +1,10 @@
 Xinhui: TravelingWendyGUI.java & TravelingWendyPanel.java
 	- Set up GUI layout
-	- Represent WendyGraph object in GUI
-	- Handle all user events
+	- Represented WendyGraph object in GUI
+	- Handled all user events
 	WendyGraph.java
-	- converts lat&lon of vertex into graph coordinates
-	- use javafoundations/Sorting to find max & min latitude &
+	- Converted latitude & longitude of vertex into graph coordinates
+	- used javafoundations/Sorting to find maximum & minimum latitude &
 	  longitude
 	Edge.java
 	- calculate distance in meters given lat&lon of two points.
@@ -18,11 +18,10 @@ Julia: WendyGraph.java
        Edge.java
        - Most functions
        TabbedPanePanel.java
-       - The About tab!
-Julia(Mostly) & Xinhui:
-	      wellesleycoords.txt
-	      - Manually recorded geo-coordinates of buildings,
-	      	intersections, and connections.
+       - The About tab and incorporation of the 
+Julia (Mostly) & Xinhui:
+	wellesleycoords.txt
+	- Manually recorded geo-coordinates of buildings, intersections, and connections.
 		
 	  
 

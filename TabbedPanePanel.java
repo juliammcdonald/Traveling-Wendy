@@ -23,7 +23,7 @@ public class TabbedPanePanel extends JPanel {
     JComponent aboutPanel = makeAboutPanel();
     tabbedPane.addTab("About", aboutPanel);
     
-    JComponent wendyPanel = new TravelingWendyPanel(825, 580);
+    JComponent wendyPanel = new TravelingWendyPanel(825, 560);
     tabbedPane.addTab("Map", wendyPanel );
     
     add(tabbedPane);
