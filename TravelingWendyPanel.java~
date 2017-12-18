@@ -1,16 +1,16 @@
 /********************************************************************
-* TravelingWendyPanel.java
-* 
-* Constructs the Map tab in the GUI from the WendyGraph object, 
-* and handles all user interactions with the map.
-* 
-* Uses functions from the jGraph library to draw and style vertices and edges.
-* 
-* Constructor is called from TabbedPanePanel.java
-* 
-* @author Xinhui Xu, Julia McDonald
-* @date Dec 18, 2017
-********************************************************************/
+  * TravelingWendyPanel.java
+  * 
+  * Constructs the Map tab in the GUI from the WendyGraph object, 
+  * and handles all user interactions with the map.
+  * 
+  * Uses functions from the jGraph library to draw and style vertices and edges.
+  * 
+  * Constructor is called from TabbedPanePanel.java
+  * 
+  * @author Xinhui Xu, Julia McDonald
+  * @date Dec 18, 2017
+  ********************************************************************/
 import java.util.*;
 
 import java.awt.*;
@@ -27,16 +27,16 @@ public class TravelingWendyPanel extends JPanel {
   /*----------Instance variables----------*/
   private JLabel selectLabel; //Text to prompt user action
   private JButton resetButton, toggleDistanceButton; //Button to reset selection 
-                                            //and to toggle display of distance between vertices
+  //and to toggle display of distance between vertices
   private boolean toggleDistance; //true when distance display is on
   private WendyGraph wendyGraph; //The graph representation of Wellesley
   private String[] selectedNodes; //The names of vertices user clicked on
   private Object[] coloredCells; //List of vertices to be highlighted  
-    
+  
   //necessary for mxGraph library functions
   private Vector<Object> vertexObjects; //List of vertices on the map
   private mxGraph graph; private Object parent; private mxGraphComponent graphComponent;
-
+  
   
   /*----------Constructor @Xinhui----------
    * @param graphViewportWidth - width of the graph component
@@ -47,18 +47,19 @@ public class TravelingWendyPanel extends JPanel {
     wendyGraph = new WendyGraph( "wellesleycoord.txt" );    
     selectedNodes = new String[2];    
     selectLabel = new JLabel("Select origin");
+    selectLabel.setFont(new Font("Monospaced", Font.BOLD, 24));
     toggleDistance = true;
-
+    
     /*------------Initialize GridBagLayout-------------*/
     setLayout(new GridBagLayout());
     GridBagConstraints gc = new GridBagConstraints();
-         
+    
     gc.weightx = 0.5;
     gc.weighty = 0.5;
     
     gc.gridx = 0;
     gc.gridy= 0;    
-        
+    
     /*----------Create graph and graph stylesheets----------*/
     graph = new mxGraph();
     parent = graph.getDefaultParent();
@@ -131,59 +132,59 @@ public class TravelingWendyPanel extends JPanel {
     /*----------Click handler, only active on cells----------*/  
     graphComponent.getGraphControl().addMouseListener(new MouseAdapter(){      
       public void mouseReleased(MouseEvent e){
-	  Object cell = null;
-	  try {
-	      cell = graphComponent.getCellAt(e.getX(), e.getY());
-	      System.out.println("Cell="+cell);
-	      if (isNumeric(graph.getLabel(cell).substring(0,1))){
-		      System.out.println("Clicked on edge");
-	      }
-	  } catch (StringIndexOutOfBoundsException sx) {
-	      System.out.println("Clicked on empty space");
-	  }
-        if ( (cell != null)               
-              || (selectedNodes[0] == null) || (selectedNodes[1] == null)) {
-          /*----------Origin has not been selected-----------*/
-          if ( selectedNodes[0] == null ){            
-            selectedNodes[0] = graph.getLabel(cell);
-            selectLabel.setText("Select destination");
-            coloredCells = new Object[]{cell};
-            graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "red", coloredCells);
-            graph.setCellStyles(mxConstants.STYLE_STROKECOLOR, "red", coloredCells);
+        Object cell = null;
+        try {
+          cell = graphComponent.getCellAt(e.getX(), e.getY());
+          //System.out.println("Cell="+cell);
           
-          /*--------Origin is already selected, but not destination----------*/
-          } else if ( selectedNodes[1] == null ){ 
-            selectedNodes[1] = graph.getLabel(cell);
-            graphComponent.refresh();
-            selectLabel.setText("If you see this, something went wrong. Try 'Reset' or reload the program.");
-            
-            /*----------Call Dijkstra method----------*/
-            ArrayList<Node> shortestPath = wendyGraph.runDijkstra(selectedNodes[0], selectedNodes[1]);
-            selectLabel.setText("The shortest path is: "+ shortestPath.toString());
-            
-            /*---------Color nodes and paths visited, store in Object[] coloredCells----------*/
-            coloredCells = new Object[shortestPath.size()];
-            int j = 0;
-            for (Node n : shortestPath) {
-              int i = wendyGraph.vertices.indexOf(n);
-              coloredCells[j] = vertexObjects.get(i);
-              j++;
-            }            
-            graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "red", coloredCells);
-            graph.setCellStyles(mxConstants.STYLE_STROKECOLOR, "red", coloredCells);
-            
-            graph.getModel().beginUpdate();
-            try {
-              for (j = 0; j < (coloredCells.length - 1); j++){
-                Object[] edge = graph.getEdgesBetween(coloredCells[j], coloredCells[j+1]);
-                graph.setCellStyles(mxConstants.STYLE_STROKECOLOR, "red", edge);
-                graph.setCellStyles(mxConstants.STYLE_STROKEWIDTH, "4", edge);
-              }
-            } finally {
-              graph.getModel().endUpdate();
+          if ( !isNumeric(graph.getLabel(cell).substring(0,1)) && 
+              ((selectedNodes[0] == null) || (selectedNodes[1] == null))) {
+            /*----------Origin has not been selected-----------*/
+            if ( selectedNodes[0] == null ){            
+              selectedNodes[0] = graph.getLabel(cell);
+              selectLabel.setText("Select destination");
+              selectLabel.setFont(new Font("Monospaced", Font.BOLD, 24));
+              coloredCells = new Object[]{cell};
+              graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "red", coloredCells);
+              graph.setCellStyles(mxConstants.STYLE_STROKECOLOR, "red", coloredCells);
+              
+              /*--------Origin is already selected, but not destination----------*/
+            } else if ( selectedNodes[1] == null ){ 
+              selectedNodes[1] = graph.getLabel(cell);
               graphComponent.refresh();
+              selectLabel.setText("If you see this, something went wrong. Try 'Reset' or reload the program.");
+              
+              /*----------Call Dijkstra method----------*/
+              ArrayList<Node> shortestPath = wendyGraph.runDijkstra(selectedNodes[0], selectedNodes[1]);
+              selectLabel.setText("The shortest path is: "+ shortestPath.toString());
+              selectLabel.setFont(new Font("Monospaced", Font.BOLD, 10));
+              
+              /*---------Color nodes and paths visited, store in Object[] coloredCells----------*/
+              coloredCells = new Object[shortestPath.size()];
+              int j = 0;
+              for (Node n : shortestPath) {
+                int i = wendyGraph.vertices.indexOf(n);
+                coloredCells[j] = vertexObjects.get(i);
+                j++;
+              }            
+              graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "red", coloredCells);
+              graph.setCellStyles(mxConstants.STYLE_STROKECOLOR, "red", coloredCells);
+              
+              graph.getModel().beginUpdate();
+              try {
+                for (j = 0; j < (coloredCells.length - 1); j++){
+                  Object[] edge = graph.getEdgesBetween(coloredCells[j], coloredCells[j+1]);
+                  graph.setCellStyles(mxConstants.STYLE_STROKECOLOR, "red", edge);
+                  graph.setCellStyles(mxConstants.STYLE_STROKEWIDTH, "4", edge);
+                }
+              } finally {
+                graph.getModel().endUpdate();
+                graphComponent.refresh();
+              }
             }
           }
+        }  catch (StringIndexOutOfBoundsException sx) {
+          System.out.println("User clicked on empty space");
         }
       }
     }); /*----------End clickhandler-----------*/    
@@ -201,17 +202,17 @@ public class TravelingWendyPanel extends JPanel {
     toggleDistanceButton = new JButton("Toggle distance display (meters)");
     toggleDistanceButton.addActionListener(new ButtonListener());
     
-
+    
     JPanel panel = new JPanel(new GridLayout(1,2)); // 1 row, 2 cols
     panel.add(resetButton);
     panel.add(toggleDistanceButton);
     add(panel, gc);
     
     /*----------Set and Scale Background @author : Julia----------*/
-
+    
     ImageIcon image = new ImageIcon("wellesleyBG3.png");
     graphComponent.setBackgroundImage(image);
-
+    
   }
   
   /*----------Button handler @author : Xinhui----------*/
@@ -219,7 +220,8 @@ public class TravelingWendyPanel extends JPanel {
     public void actionPerformed(ActionEvent e){
       if (e.getSource() == resetButton){           
         selectLabel.setText("Select origin");
-         
+        selectLabel.setFont(new Font("Monospaced", Font.BOLD, 24));
+        
         /*----------Reset any selection-------*/
         graph.getModel().beginUpdate();        
         try {
@@ -234,30 +236,30 @@ public class TravelingWendyPanel extends JPanel {
           /*----------Reset node style------------*/
           graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "", coloredCells);
           graph.setCellStyles(mxConstants.STYLE_STROKECOLOR, "", coloredCells);
-            
+          
           coloredCells = null;
           selectedNodes = new String[2];
-
+          
         } finally {
           graph.getModel().endUpdate();
           graphComponent.refresh();
         }
-      /*------------Toggle distance display------------*/
+        /*------------Toggle distance display------------*/
       } else if (e.getSource() == toggleDistanceButton){
         
-       graph.getModel().beginUpdate();
-       try {
-         if (toggleDistance == true) {
-           graph.getStylesheet().getDefaultEdgeStyle().put(mxConstants.STYLE_NOLABEL, "1");
-           toggleDistance = false;
-         } else {
-           graph.getStylesheet().getDefaultEdgeStyle().put(mxConstants.STYLE_NOLABEL, "0");
-           toggleDistance = true;
-         }
-       } finally {
-         graph.getModel().endUpdate();
-         graphComponent.refresh();
-       }
+        graph.getModel().beginUpdate();
+        try {
+          if (toggleDistance == true) {
+            graph.getStylesheet().getDefaultEdgeStyle().put(mxConstants.STYLE_NOLABEL, "1");
+            toggleDistance = false;
+          } else {
+            graph.getStylesheet().getDefaultEdgeStyle().put(mxConstants.STYLE_NOLABEL, "0");
+            toggleDistance = true;
+          }
+        } finally {
+          graph.getModel().endUpdate();
+          graphComponent.refresh();
+        }
       }
     }
   }
@@ -273,7 +275,8 @@ public class TravelingWendyPanel extends JPanel {
   {  
     try {  
       double d = Double.parseDouble(str);  
-    } catch(NumberFormatException nfe) {  
+    } catch(NumberFormatException nfe) {
+      //System.out.println("Invalid click"); //User clicked on path
       return false;  
     }  
     return true;  

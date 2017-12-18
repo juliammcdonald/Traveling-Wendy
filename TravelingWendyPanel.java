@@ -157,7 +157,7 @@ public class TravelingWendyPanel extends JPanel {
               /*----------Call Dijkstra method----------*/
               ArrayList<Node> shortestPath = wendyGraph.runDijkstra(selectedNodes[0], selectedNodes[1]);
               selectLabel.setText("The shortest path is: "+ shortestPath.toString());
-              selectLabel.setFont(new Font("Monospaced", Font.BOLD, 10));
+              selectLabel.setFont(new Font("Monospaced", Font.BOLD, 8));
               
               /*---------Color nodes and paths visited, store in Object[] coloredCells----------*/
               coloredCells = new Object[shortestPath.size()];
