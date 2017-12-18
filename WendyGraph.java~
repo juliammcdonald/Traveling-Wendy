@@ -289,11 +289,5 @@ public class WendyGraph {
     System.out.println( w.getPath( "BATES" ) );
     System.out.println( w.getPath( "SCICTR" ) );
     System.out.println(  w.getPath( "VILLE" ) );
-    
-    ArrayList<ArrayList<Node>> allPaths = w.getAllPaths();
-    
-    for( int i = 0; i < allPaths.size(); i++ ) {
-      System.out.println( allPaths.get( i ) );
-    }
   }
 }
