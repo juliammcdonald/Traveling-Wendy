@@ -189,7 +189,7 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     
     resetButton = new JButton("Reset");
     resetButton.addActionListener(new ButtonListener());
-    toggleDistanceButton = new JButton("Toggle distance[meters] display");
+    toggleDistanceButton = new JButton("Toggle distance display (meters)");
     toggleDistanceButton.addActionListener(new ButtonListener());
     
 
