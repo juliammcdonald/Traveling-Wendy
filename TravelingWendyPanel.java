@@ -9,7 +9,6 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
-import java.awt.print.Paper;
 
 /*----------jGraph library---------*/
 import com.mxgraph.swing.mxGraphComponent;
@@ -193,23 +192,17 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     //add(toggleDistanceButton, gc);
     toggleDistanceButton.addActionListener(new ButtonListener());
     
+
     JPanel panel = new JPanel(new GridLayout(1,2)); // 1 row, 2 cols
     panel.add(resetButton);
     panel.add(toggleDistanceButton);
     add(panel, gc);
     
     /*----------Set and Scale Background @Julia----------*/
+
     ImageIcon image = new ImageIcon("wellesleyBG3.png");
-    /*graphComponent.setPageVisible(true);
-     * 
-     Paper paper = new Paper();
-     paper.setSize((double)image.getIconWidth(), (double)image.getIconHeight());
-     graphComponent.getPageFormat().setPaper(paper);*/
     graphComponent.setBackgroundImage(image);
-    //graphComponent.setPageScale(1.0);
-    //getContentPane().add(graphComponent, BorderLayout.CENTER);
-    
-    
+
   }
   
   /*----------Button handler @Xinhui----------*/

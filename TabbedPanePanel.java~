@@ -1,0 +1,36 @@
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.event.*;
+
+
+public class TabbedPanePanel extends JPanel {
+  public TabbedPanePanel() {
+    super(new GridLayout(1, 1));
+    
+    JTabbedPane tabbedPane = new JTabbedPane();
+
+    JComponent aboutPanel = makeAboutPanel();
+    tabbedPane.addTab("About", panel2);
+    
+    JComponent wendyPanel = new TravelingWendyPanel(825, 600);
+    tabbedPane.addTab("Map", wendyPanel );
+    
+  }
+
+  protected JComponent makeAboutPanel() {
+    JPanel panel = new JPanel(false);
+    JLabel text = new JLabel("Xinhui Xu & Julia McDonald");
+    
+    ImageIcon authors = new ImageIcon( "authors.JPG" );
+    JLabel pic = new JLabel( authors );
+    
+    text.setHorizontalAlignment(JLabel.LEFT);
+    pic.setHorizontalAlignment(JLabel.RIGHT);
+
+    panel.setLayout(new GridLayout(2, 1));
+    panel.add(filler);
+  }
+     
+}
