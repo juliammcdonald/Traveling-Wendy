@@ -1,11 +1,6 @@
 /*****************************************************************
  * Node.java
- * 
- * Represents a building or a road intersection on a map.
- * Stores name of the building/intersection and it's latitude and longitude.
- * 
- * Constructor is called from WendyGraph.java
- * 
+ * Node objects hold the location of a given point on the map. They are the vertices of the graph.
  * @author Julia McDonald
  * @date Dec. 18, 2017
  ****************************************************************/
@@ -14,9 +9,9 @@ public class Node implements Comparable<Node>{
   protected String name;
   protected double latitude;
   protected double longitude;
-  protected boolean isBuilding; //false if is road intersection
-  protected double weight; //variable used in path-finding algorithm
-  protected Node prev; //preceding Node, used in path-finding algorithm
+  protected boolean isBuilding;
+  protected double weight;
+  protected Node prev;
   
   /**
    * Creates a Node object that holds latitude, longitude, and whether or not the Node represents a 
@@ -26,7 +21,6 @@ public class Node implements Comparable<Node>{
    * @param longitude - the longitude of the Node
    * @param isBuilding - true if it is a building, false otherwise
    * @param name - name of buildings or name of intersections is "i" + number
-   * @param weight - variable to be modified in shortest path-finding algorithm
    */
   public Node( String name, double latitude, double longitude, boolean isBuilding, double weight ) {
     this.latitude = latitude;
@@ -39,7 +33,7 @@ public class Node implements Comparable<Node>{
   
   
   /*
-   * Gets latitude of the Node
+   * Gets latitude
    * @return latitude
    */
   public double getLat() {
@@ -47,7 +41,7 @@ public class Node implements Comparable<Node>{
   }
   
   /*
-   * Gets longitude of the Node
+   * Gets longitude
    * @return longitude
    */
   public double getLon() {
@@ -55,15 +49,15 @@ public class Node implements Comparable<Node>{
   }
   
   /*
-   * Gets is the Node is a building
-   * @return true if building, false otherwise
+   * Gets isBuilding
+   * @return true if building, false otherwise (does not determine this)
    */
   public boolean getisBuilding() {
     return isBuilding;
   }
   
   /*
-   * Gets name of the node
+   * Gets name
    * @return name
    */
   public String getName() {
@@ -78,8 +72,6 @@ public class Node implements Comparable<Node>{
     return name;
   }
   
-
-  /******************** Functions used in path-finding algorithm *****************/
   /*
    * Sets the weight of a node
    * @param w - the new weight of the node
