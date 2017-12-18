@@ -1,6 +1,7 @@
-/**
+/*****************************************************************
+ * Node.java
  * Node objects hold the location of a given point on the map. They are the vertices of the graph.
- */
+ ****************************************************************/
 public class Node implements Comparable<Node>{
   
   protected String name;
@@ -30,23 +31,6 @@ public class Node implements Comparable<Node>{
   
   public double getLat() {
     return latitude;
-  }
-  
-  public void printPath()
-  {
-    if (this == this.prev)
-    {
-      System.out.print(this.name);
-    }
-    else if (this.prev == null)
-    {
-      System.out.print(this.name + "(unreached)");
-    }
-    else
-    {
-      this.prev.printPath();
-      System.out.print(" -> " + this.name + "(" + this.weight + ")");
-    }
   }
   
   public double getLon() {

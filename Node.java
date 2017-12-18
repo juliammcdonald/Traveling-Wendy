@@ -29,30 +29,59 @@ public class Node implements Comparable<Node>{
     this.prev = null;
   }
   
+  
+  /*
+   * Gets latitude
+   * @return latitude
+   */
   public double getLat() {
     return latitude;
   }
   
+  /*
+   * Gets longitude
+   * @return longitude
+   */
   public double getLon() {
     return longitude;
   }
   
+  /*
+   * Gets isBuilding
+   * @return true if building, false otherwise (does not determine this)
+   */
   public boolean getisBuilding() {
     return isBuilding;
   }
   
+  /*
+   * Gets name
+   * @return name
+   */
   public String getName() {
     return name;
   }
   
+  /**
+   * Returns a string representation of a Node
+   * @return string containing the name of the node
+   */
   public String toString() {
     return name;
   }
   
+  /*
+   * Sets the weight of a node
+   * @param w - the new weight of the node
+   */
   public void setWeight( double w ) {
     weight = w;
   }
   
+  /**
+   * Gets weight
+   * @param weight
+   */
   public double getWeight() {
     return weight;
   }
