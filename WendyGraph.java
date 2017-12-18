@@ -1,6 +1,10 @@
 /*****************************************************************
   * WendyGraph.java
-  * Creates a Graph of Nodes and Edges. This is a weighted adjacency list graph.
+  * 
+  * Creates a Graph representation of the buildings, roads and intersections
+  * in Wellesley College.
+  * 
+  * Constructor is called from TravelingWendyPanel.java
   * 
   * @author Julia McDonald, Xinhui Xu (all methods written by Julia unless noted)
   * @date Dec. 18, 2017
@@ -12,14 +16,24 @@ import javafoundations.*;
 
 public class WendyGraph {
   //instance variables
-  public ArrayList<Node> vertices;
-  public ArrayList<LinkedList<Edge>> edges;
-  public Double[] latitudes; public Double[] longitudes;
-  public Double maxLong, minLong, maxLat, minLat;
+  //List of buildings and road intersections
+  public ArrayList<Node> vertices; 
+  
+  //List of all the connections for each vertex
+  public ArrayList<LinkedList<Edge>> edges;   
+ 
+  //List of latitudes and longitudes of each vertex
+  public Double[] latitudes; public Double[] longitudes; 
+  
+  //Maximum and minimum latitude and longitude of all vertices
+  public Double maxLong, minLong, maxLat, minLat; 
+  
   
   /* 
    * Constructor
-   * @param fileName - name of textfile containing latitude and longitude data.
+   * @param fileName - name of textfile containing node names,
+   *                   latitude and longitude of the nodes,
+   *                   and any connections between nodes.
    */
   public WendyGraph( String fileName ) {
     vertices = new ArrayList<Node>();
@@ -268,7 +282,8 @@ public class WendyGraph {
   }
   
   /**
-   * Runs dijkstra's alg and returns the path from the start node to the end node
+   * Runs dijkstra's algorithm and returns the path 
+   * from node of startName to the node of endName.
    * 
    * @param startName - the name of the start node
    * @param endName - the name of the end node

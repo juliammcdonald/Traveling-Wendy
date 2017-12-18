@@ -1,11 +1,6 @@
 /*****************************************************************
   * Edge.java
-  * 
-  * Represents the path between two buildings or road intersections.
-  * Stores the length of the path in meters.
-  * 
-  * Constructor is called in WendyGraph.java
-  * 
+  * Creates a weighted Edge between two Nodes
   * @author Julia McDonald, Xinhui Xu
   * @date Dec 18, 2017
   ****************************************************************/
@@ -13,9 +8,9 @@ import java.text.DecimalFormat;
 
 public class Edge {
   
-  protected Node node1; //Building or intersection
-  protected Node node2; //Building or intersection
-  protected double length; //Distance of path connecting node1 and node2
+  protected double length;
+  protected Node node1;
+  protected Node node2;
   
   /**@author Xinhui
     * 
@@ -56,7 +51,7 @@ public class Edge {
   }
   
   /*@author Julia
-   * Gets the distance in meters of this path.
+   * Gets length
    * @return length
    */
   public double getLength(){
@@ -64,7 +59,7 @@ public class Edge {
   }
   
   /*@author Xinhui
-   * Gets a formatted version of the distance in meters of this path.
+   * Gets length formatted to numDigitsAfterDecimal
    * @return string containing the formatted length
    */
   public String getLengthFormatted(int numDigitsAfterDecimal){
@@ -74,23 +69,23 @@ public class Edge {
   }
   
   /*@author Julia
-   * Gets one end of the path.
-   * @return node1 - a building or intersection this Edge connects.
+   * Gets node1
+   * @return node1
    */
   public Node getNode1() {
     return node1;
   }
   
   /*@author Julia
-   * Gets the other end of the path.
-   * @return node2 - the other building or intersection this Edge connects.
+   * Gets node2
+   * @return node2
    */
   public Node getNode2() {
     return node2;
   }
   
   /*@author Julia
-   * Given one end of the path, gets the other end (either node 1 or node 2).
+   * Gets Edge's unknown node (either node 1 or node 2)
    * 
    * @return node that is not known
    */
@@ -101,7 +96,7 @@ public class Edge {
   }
   
   /**@author Julia
-   * Creates string representation of Edge (both nodes)
+   * Creates string representation of the Edge (both nodes)
    * 
    * @return string (node1, node2) representing the Edge
    */

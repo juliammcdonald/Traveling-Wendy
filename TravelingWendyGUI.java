@@ -1,6 +1,7 @@
 /********************************************************************
 * TravelingWendyGUI.java
-* Driver class
+* Driver class. 
+* Creates a TabbedPanePanel object and adds it to the GUI.
 * 
 * @author Xinhui Xu, Julia McDonald
 * @date Dec. 18, 2017

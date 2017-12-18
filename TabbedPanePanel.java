@@ -1,5 +1,8 @@
 /**
- * Creates a tabbed pane panel to be added to the GUI
+ * TabbedPanePanel.java
+ * 
+ * Creates the about tab and the map tab (TravelingWendyPanel).
+ * Constructor is called from TravelingWendyGUI.java
  * 
  * @author Julia McDonald
  * @date Dec 18, 2017
@@ -24,13 +27,14 @@ public class TabbedPanePanel extends JPanel {
     tabbedPane.addTab("About", aboutPanel);
     
     JComponent wendyPanel = new TravelingWendyPanel( mapPixelWidth, mapPixelHeight );
+
     tabbedPane.addTab("Map", wendyPanel );
     
     add(tabbedPane);
   }
   
   /*
-   * Makes the about panel with picture and three lines of text in center-aligned box layout
+   * Makes the about tab with team photo and text description.
    * 
    * @return JComponent - the about panel
    */

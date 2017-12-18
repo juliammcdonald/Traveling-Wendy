@@ -1,13 +1,17 @@
 /********************************************************************
 * TravelingWendyPanel.java
-* Constructs the TravelingWendyPanel and controls all of its activity and 
-* interaction with WendyGraph
+* 
+* Constructs the Map tab in the GUI from the WendyGraph object, 
+* and handles all user interactions with the map.
+* 
+* Uses functions from the jGraph library to draw and style vertices and edges.
+* 
+* Constructor is called from TabbedPanePanel.java
 * 
 * @author Xinhui Xu, Julia McDonald
 * @date Dec 18, 2017
 ********************************************************************/
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -19,17 +23,18 @@ import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.*;
 import com.mxgraph.util.*;
 
-public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
+public class TravelingWendyPanel extends JPanel {
   /*----------Instance variables----------*/
-  private JLabel selectLabel, mapLabel;
-  private JButton resetButton, toggleDistanceButton;
-  private WendyGraph wendyGraph;
-  private String[] selectedNodes;
-  private Object[] coloredCells;
-  private Vector<Object> vertexObjects;
-  private boolean toggleDistance;
-  
-  //necessary for mxGraph function
+  private JLabel selectLabel; //Text to prompt user action
+  private JButton resetButton, toggleDistanceButton; //Button to reset selection 
+                                            //and to toggle display of distance between vertices
+  private boolean toggleDistance; //true when distance display is on
+  private WendyGraph wendyGraph; //The graph representation of Wellesley
+  private String[] selectedNodes; //The names of vertices user clicked on
+  private Object[] coloredCells; //List of vertices to be highlighted  
+    
+  //necessary for mxGraph library functions
+  private Vector<Object> vertexObjects; //List of vertices on the map
   private mxGraph graph; private Object parent; private mxGraphComponent graphComponent;
 
   
@@ -42,7 +47,6 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     wendyGraph = new WendyGraph( "wellesleycoord.txt" );    
     selectedNodes = new String[2];    
     selectLabel = new JLabel("Select origin");
-    mapLabel = new JLabel("This is the map placeholder");
     toggleDistance = true;
 
     /*------------Initialize GridBagLayout-------------*/
@@ -254,7 +258,10 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
   }
   
   /*
-   * Determines whether a String contains a number
+   * Determines whether a String contains a number.
+   * Used to determine if the user clicked on a path instead of a building
+   * because the paths are labeled with numbers.
+   * 
    * @return true if contains a double, false otherwise
    */
   public static boolean isNumeric(String str)  
