@@ -20,7 +20,7 @@ public class TabbedPanePanel extends JPanel {
   /*
    * Constructor (adds an about panel and a TravelingWendyPanel)
    */
-  public TabbedPanePanel() {
+  public TabbedPanePanel( int mapPixelWidth, int mapPixelHeight ) {
     super(new GridLayout(1, 1));
     
     JTabbedPane tabbedPane = new JTabbedPane();
@@ -28,7 +28,8 @@ public class TabbedPanePanel extends JPanel {
     JComponent aboutPanel = makeAboutPanel();
     tabbedPane.addTab("About", aboutPanel);
     
-    JComponent wendyPanel = new TravelingWendyPanel(825, 580);
+    JComponent wendyPanel = new TravelingWendyPanel( mapPixelWidth, mapPixelHeight );
+
     tabbedPane.addTab("Map", wendyPanel );
     
     add(tabbedPane);

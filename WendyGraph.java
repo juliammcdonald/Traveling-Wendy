@@ -171,8 +171,9 @@ public class WendyGraph {
   
   /** 
    * The following methods are with help from https://rosettacode.org/wiki/Dijkstra%27s_algorithm#Java
-   * They have been modified according to our own Node, Edge, and WendyGraph classes, and multiple attempts to
-   * implement Dijkstra's Algorithm with a Priority Queue were made prior to aid from this implementation.
+   * They have been modified according to our own Node, Edge, and WendyGraph classes, and adjusted to 
+   * use a PriorityQueue rather than a TreeSet. Multiple attempts to implement Dijkstra's Algorithm 
+   * were made prior to aid from this implementation.
    */
   
   /**
@@ -190,7 +191,7 @@ public class WendyGraph {
     Node source = vertices.get( findNodeIndex( sourceName ) );
     
     System.out.println( source );
-    NavigableSet<Node> q = new TreeSet<Node>();
+    PriorityQueue<Node> q = new PriorityQueue<Node>();
     
     for( Node v : vertices ) {
       
@@ -214,11 +215,11 @@ public class WendyGraph {
    * 
    * @param q - a NavigableSet containing all Nodes in vertices
    */
-  private void dijkstra( final NavigableSet<Node> q ) {
+  private void dijkstra( final PriorityQueue<Node> q ) {
     Node u, v;
     while( !q.isEmpty() ) {
       
-      u = q.pollFirst(); //node with the shortest distance
+      u = q.poll(); //node with the shortest distance
       
       if( u.getWeight() == Double.MAX_VALUE) break; //we can ignore u because it is unreachable
       
