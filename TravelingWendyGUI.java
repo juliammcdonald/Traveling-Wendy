@@ -21,11 +21,9 @@ public class TravelingWendyGUI {
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
  
     frame.setPreferredSize(new java.awt.Dimension(1280, 960));
-<<<<<<< HEAD
     
     //Creates a TabbedPanePanel object and adds it to the GUI.
     TabbedPanePanel panel = new TabbedPanePanel();
-=======
 
     TabbedPanePanel panel;
     if( args.length == 2 ) {
@@ -34,7 +32,6 @@ public class TravelingWendyGUI {
     else {
       panel = new TabbedPanePanel(825, 570);
     }
->>>>>>> e0391f36556d3f67e1246f3f6b1a687738a1713f
     frame.getContentPane().add(panel);
     
     frame.pack();
