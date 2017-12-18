@@ -1,7 +1,10 @@
 /*****************************************************************
   * WendyGraph.java
- * Creates a Graph of Nodes and Edges. This is a weighted adjacency list graph.
- ****************************************************************/
+  * Creates a Graph of Nodes and Edges. This is a weighted adjacency list graph.
+  * 
+  * @author Julia McDonald
+  * @date Dec. 18, 2017
+  ****************************************************************/
 
 import java.util.*;
 import java.io.*;
@@ -14,9 +17,10 @@ public class WendyGraph {
   public Double[] latitudes; public Double[] longitudes;
   public Double maxLong, minLong, maxLat, minLat;
   
-  /* --------------Constructor @Julia------------------
+  /* 
+   * Constructor
    * @param fileName - name of textfile containing latitude and longitude data.
-  */
+   */
   public WendyGraph( String fileName ) {
     vertices = new ArrayList<Node>();
     edges = new ArrayList<LinkedList<Edge>>();
@@ -36,7 +40,7 @@ public class WendyGraph {
         isBuilding = (name.charAt( 0 ) != 'i');
         lat = Double.parseDouble( in.next() );
         lon = Double.parseDouble( in.next() );
-
+        
         addNode( new Node( name, lat, lon, isBuilding, Integer.MAX_VALUE ));
         //add adjacency list for each new node
         edges.add( new LinkedList<Edge>() );
@@ -47,7 +51,7 @@ public class WendyGraph {
       //new Edge variables
       Node n1;
       Node n2;
-
+      
       while( in.hasNext() ) {
         n1 = vertices.get( findNodeIndex( in.next() ));
         n2 = vertices.get( findNodeIndex( in.next() ));
@@ -75,7 +79,7 @@ public class WendyGraph {
       minLat = Math.abs(latitudes[latitudes.length - 1]); 
       maxLong = Math.abs(longitudes[0]);
       minLong = Math.abs(longitudes[longitudes.length - 1]);
-            
+      
     } catch( IOException e ) {
       System.out.println( "File IO Exception" );
     }
@@ -101,7 +105,7 @@ public class WendyGraph {
   private int findNodeIndex( Node n ) {
     for( int i = 0; i < vertices.size(); i++ ) {
       if( n.equals( vertices.get( i ) ))
-           return i;
+        return i;
     }
     return -1;
   }
@@ -130,43 +134,6 @@ public class WendyGraph {
     return s;
   }
   
-/* -----------((deprecated, moved to constructor)) 
-  public Double[] getAllLongitudes(){
-    Double[] longs = new Double[vertices.size()];
-    int i = 0;
-    for (Node n : vertices){
-      longs[i] = n.getLon();
-      i++;
-    }
-    return longs;
-  }    
-  public Double[] getAllLatitudes(){
-    Double[] lats = new Double[vertices.size()];
-    int i = 0;
-    for (Node n : vertices){
-      lats[i] = n.getLat();
-      i++;
-    }
-    return lats;
-  }  
-  public Double getLongitude(String type){    
-    Sorting.quickSort(longitude, 0, longs.length - 1);
-    if (type.equals("max")){     
-      return Math.abs(longs[0]); //max
-    } else {//does not consider invalid input since not open to user
-      return Math.abs(longs[longs.length - 1]); //min
-    }
-  }  
-  public Double getLatitude(String type){
-    Double[] lats = getAllLatitudes();
-    Sorting.quickSort(lats, 0, lats.length - 1);
-    if (type.equals("max")){     
-      return Math.abs(lats[0]); //max
-    } else {//does not consider invalid input since not open to user
-      return Math.abs(lats[lats.length - 1]); //min
-    }
-  }-------------------*/
- 
   
   /* Converts latitude and longitude of a node into its appropriate location on graph of any size.
    * @param lat - the latitude of the node.
@@ -175,13 +142,10 @@ public class WendyGraph {
    * @param mapHeight - the height of the graph viewport.
    * @return - a integer array of x and y coordinates.*/
   public int[] getPixelCoordinates(double lat, double lon, int mapWidth, int mapHeight){
-
-    //System.out.printf("maxLong:%f minLong:%f maxLat:%f minLat:%f\n", maxLong, minLong, maxLat, minLat);
-    
     /* Brute force handling of floating point precision */
     Double spanLong = (maxLong - minLong) * 10E5;
     Double spanLat = (maxLat - minLat) * 10E5;
-        
+    
     int[] pixelCoords = new int[2];
     pixelCoords[0] = (int)Math.round(((1 - (lon*10E5 - minLong*10E5) / spanLong)) * mapWidth);
     pixelCoords[1] = (int)Math.round(((lat*10E5 - minLat*10E5) / spanLat) * mapHeight);
@@ -189,7 +153,18 @@ public class WendyGraph {
     return pixelCoords;
   }
   
+  /** 
+   * The following methods are with help from https://rosettacode.org/wiki/Dijkstra%27s_algorithm#Java
+   * They have been modified according to our own Node, Edge, and WendyGraph classes, and multiple attempts to
+   * implement Dijkstra's Algorithm with a Priority Queue were made prior to aid from this implementation.
+   */
   
+  /**
+   * Sets up the "Queue" (which is actually a tree set) needed for Dijjkstra's algorithm
+   * and makes the needed modifications.
+   * 
+   * @param sourceName - the name of the start Node
+   */
   public void dijkstra( String sourceName ) {
     if( findNodeIndex( sourceName ) == -1 ) {
       System.err.println( "Enter a valid startName" );
@@ -214,19 +189,21 @@ public class WendyGraph {
       q.add( v );
     }
     
-    //System.out.println( q );
-    
     dijkstra(q);
   }
   
+  /**
+   * Empties the "Queue" and updates the weights and previous nodes of all vertices
+   * (Performs the bulk of Dijkstra's algorithm)
+   * 
+   * @param q - a NavigableSet containing all Nodes in vertices
+   */
   private void dijkstra( final NavigableSet<Node> q ) {
     Node u, v;
-    //System.out.println( q );
     while( !q.isEmpty() ) {
       
-      //System.out.println("START: " + q );
       u = q.pollFirst(); //node with the shortest distance
-      //System.out.println( u );
+      
       if( u.getWeight() == Double.MAX_VALUE) break; //we can ignore u because it is unreachable
       
       //distances to each neighbor
@@ -235,18 +212,24 @@ public class WendyGraph {
         
         double altWeight = u.getWeight() + e.getLength();
         
+        //change weight if there is a lower one found
         if( altWeight < v.getWeight() ) {
-          //System.out.println( "changing weight" );
           q.remove( v );
           v.setWeight( altWeight );
           v.setPrev( u );
           q.add( v );
         }
       }
-      //System.out.println( "END: " + q );
     }
   }
   
+  /*
+   * Finds all nodes along the shortest path from the source node (for which Dijkstra's alg has
+   * already been run) and the end node.
+   * 
+   * @param endName - the name of the destination node
+   * @return an ArrayList of all nodes along the path from the source node to the end node
+   */
   public ArrayList<Node> getPath( String endName ) {
     if( findNodeIndex( endName ) == -1 ) {
       System.err.println( "Enter a valid endName" );
@@ -266,7 +249,12 @@ public class WendyGraph {
     return path;
   }
   
-  public ArrayList<ArrayList<Node>> printAllPaths() {
+  /**
+   * Finds the shortest path of nodes from the source node to all other nodes
+   * 
+   * @return an ArrayList of all paths (each of which is also an ArrayList)
+   */
+  public ArrayList<ArrayList<Node>> getAllPaths() {
     ArrayList<ArrayList<Node>> allPaths = new ArrayList<ArrayList<Node>>();
     
     for( Node n: vertices ) {
@@ -276,6 +264,14 @@ public class WendyGraph {
     return allPaths;
   }
   
+  /**
+   * Runs dijkstra's alg and returns the path from the start node to the end node
+   * 
+   * @param startName - the name of the start node
+   * @param endName - the name of the end node
+   * 
+   * @return the shortest path of nodes from start node to end node
+   */
   public ArrayList<Node> runDijkstra( String startName, String endName ) {
     dijkstra( startName );
     return getPath( endName );
@@ -284,12 +280,12 @@ public class WendyGraph {
   /* Testing driver.*/
   public static void main( String[] args ) {
     WendyGraph w = new WendyGraph( "wellesleycoord.txt" );
-    //System.out.println( w );
+    System.out.println( w );
     
     w.dijkstra( "EASTENTRY" );
-
+    
     System.out.println( w.getPath( "BATES" ) );
     System.out.println( w.getPath( "SCICTR" ) );
-   System.out.println(  w.getPath( "VILLE" ) );
+    System.out.println(  w.getPath( "VILLE" ) );
   }
 }
