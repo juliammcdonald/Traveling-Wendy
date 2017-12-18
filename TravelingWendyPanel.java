@@ -20,10 +20,12 @@ import com.mxgraph.util.*;
 public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
   /*----------Instance variables----------*/
   private JLabel selectLabel, mapLabel;
-  private JButton resetButton;
+  private JButton resetButton, toggleDistanceButton;
   private WendyGraph wendyGraph;
   private String[] selectedNodes;
   private Object[] coloredCells;
+  private Vector<Object> vertexObjects;
+  private boolean toggleDistance;
   
   private mxGraph graph; private Object parent; private mxGraphComponent graphComponent;
 //necessary for mxGraph function
@@ -37,7 +39,8 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     wendyGraph = new WendyGraph( "wellesleycoord.txt" );    
     selectedNodes = new String[2];    
     selectLabel = new JLabel("Select origin");        
-    mapLabel = new JLabel("This is the map placeholder");    
+    mapLabel = new JLabel("This is the map placeholder");
+    toggleDistance = true;
 
     /*------------Initialize GridBagLayout-------------*/
     setLayout(new GridBagLayout());
@@ -64,15 +67,18 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     stylesheet.putCellStyle("BUILDING", style);
     
     Hashtable<String, Object> style2 = new Hashtable<String, Object>();
-    style2.put(mxConstants.STYLE_OPACITY, 50);
+    style2.put(mxConstants.STYLE_OPACITY, 75);
     style2.put(mxConstants.STYLE_FONTCOLOR, "#000000");
     //style2.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_ELLIPSE);
     stylesheet.putCellStyle("INTERSECTION", style2);
     
+    graph.getStylesheet().getDefaultEdgeStyle().put(mxConstants.STYLE_STROKECOLOR, "#d6e5ff");
+    graph.getStylesheet().getDefaultEdgeStyle().put(mxConstants.STYLE_FONTCOLOR, "#d6e5ff");
+    
     graph.getModel().beginUpdate();
     
     /*----------Plot all vertices----------*/    
-    final Vector<Object> vertexObjects = new Vector<Object>(wendyGraph.vertices.size());
+    vertexObjects = new Vector<Object>(wendyGraph.vertices.size());
     int[] pixelCoors = new int[2];
     for (Node vertex : wendyGraph.vertices){
       pixelCoors = wendyGraph.getPixelCoordinates( Math.abs(vertex.getLat()), 
@@ -88,9 +94,9 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
                                vertex.getName().length() * 10 - 10, 20,
                                "BUILDING");
       } else { //intersection
-        v = graph.insertVertex(parent, null, vertex.getName(), 
+        v = graph.insertVertex(parent, null, "", 
                                pixelCoors[0], pixelCoors[1], 
-                               15, 15,
+                               7, 7,
                                "INTERSECTION");
       }      
       vertexObjects.add( v );
@@ -103,9 +109,10 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
         Node n2 = e.getNode2();
         int index2 = wendyGraph.vertices.indexOf(n2);
         
-        graph.insertEdge(parent, null, /*e.getLengthFormatted(),*/ "", 
+        graph.insertEdge(parent, null, e.getLengthFormatted(0), 
                          vertexObjects.get(index1), vertexObjects.get(index2),
                          "endArrow=None;");
+        
         System.out.printf("Drawing edge. . .\n");
       }
     }
@@ -178,10 +185,18 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     add(selectLabel, gc);
     
     gc.gridy++;
-    resetButton = new JButton("Reset");
-    add(resetButton, gc);
-    resetButton.addActionListener(new ButtonListener());
     
+    resetButton = new JButton("Reset");
+    //add(resetButton, gc);
+    resetButton.addActionListener(new ButtonListener());
+    toggleDistanceButton = new JButton("Toggle distance[meters] display");
+    //add(toggleDistanceButton, gc);
+    toggleDistanceButton.addActionListener(new ButtonListener());
+    
+    JPanel panel = new JPanel(new GridLayout(1,2)); // 1 row, 2 cols
+    panel.add(resetButton);
+    panel.add(toggleDistanceButton);
+    add(panel, gc);
     
     /*----------Set and Scale Background @Julia----------*/
     ImageIcon image = new ImageIcon("wellesleyBG3.png");
@@ -225,8 +240,25 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
           graph.getModel().endUpdate();
           graphComponent.refresh();
         }
+      /*------------Toggle distance display------------*/
+      } else if (e.getSource() == toggleDistanceButton){
+        
+       graph.getModel().beginUpdate();
+       try {
+         if (toggleDistance == true) {
+           graph.getStylesheet().getDefaultEdgeStyle().put(mxConstants.STYLE_NOLABEL, "1");
+           toggleDistance = false;
+         } else {
+           graph.getStylesheet().getDefaultEdgeStyle().put(mxConstants.STYLE_NOLABEL, "0");
+           toggleDistance = true;
+         }
+       } finally {
+         graph.getModel().endUpdate();
+         graphComponent.refresh();
+       }
       }
     }
   }
 }
+
 
