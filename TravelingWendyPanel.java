@@ -1,6 +1,10 @@
 /********************************************************************
 * TravelingWendyPanel.java
-* Initializes the GUI and handle all events.
+* Constructs the TravelingWendyPanel and controls all of its activity and 
+* interaction with WendyGraph
+* 
+* @author Xinhui Xu, Julia McDonald
+* @date Dec 18, 2017
 ********************************************************************/
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -15,7 +19,6 @@ import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.*;
 import com.mxgraph.util.*;
 
-
 public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
   /*----------Instance variables----------*/
   private JLabel selectLabel, mapLabel;
@@ -26,8 +29,9 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
   private Vector<Object> vertexObjects;
   private boolean toggleDistance;
   
+  //necessary for mxGraph function
   private mxGraph graph; private Object parent; private mxGraphComponent graphComponent;
-//necessary for mxGraph function
+
   
   /*----------Constructor @Xinhui----------
    * @param graphViewportWidth - width of the graph component
@@ -193,10 +197,8 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     gc.gridy++;
     
     resetButton = new JButton("Reset");
-    //add(resetButton, gc);
     resetButton.addActionListener(new ButtonListener());
     toggleDistanceButton = new JButton("Toggle distance[meters] display");
-    //add(toggleDistanceButton, gc);
     toggleDistanceButton.addActionListener(new ButtonListener());
     
 
@@ -205,14 +207,14 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     panel.add(toggleDistanceButton);
     add(panel, gc);
     
-    /*----------Set and Scale Background @Julia----------*/
+    /*----------Set and Scale Background @author : Julia----------*/
 
     ImageIcon image = new ImageIcon("wellesleyBG3.png");
     graphComponent.setBackgroundImage(image);
 
   }
   
-  /*----------Button handler @Xinhui----------*/
+  /*----------Button handler @author : Xinhui----------*/
   private class ButtonListener implements ActionListener {
     public void actionPerformed(ActionEvent e){
       if (e.getSource() == resetButton){           

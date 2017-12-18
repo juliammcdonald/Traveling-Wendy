@@ -1,13 +1,19 @@
+/**
+ * Creates a tabbed pane panel to be added to the GUI
+ * 
+ * @author Julia McDonald
+ * @date Dec 18, 2017
+ */
 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.border.*;
-/**
- * @author Julia McDonald
- */
+
 public class TabbedPanePanel extends JPanel {
+  /*
+   * Constructor (adds an about panel and a TravelingWendyPanel)
+   */
   public TabbedPanePanel() {
     super(new GridLayout(1, 1));
     
@@ -22,6 +28,11 @@ public class TabbedPanePanel extends JPanel {
     add(tabbedPane);
   }
   
+  /*
+   * Makes the about panel with picture and three lines of text in center-aligned box layout
+   * 
+   * @return JComponent - the about panel
+   */
   protected JComponent makeAboutPanel() {
     JPanel panel = new JPanel(false);
     JLabel text1 = new JLabel("Welcome to Traveling Wendy!");
@@ -39,7 +50,6 @@ public class TabbedPanePanel extends JPanel {
     text2.setAlignmentX(Component.CENTER_ALIGNMENT);
     text3.setAlignmentX(Component.CENTER_ALIGNMENT);
     pic.setAlignmentX(Component.CENTER_ALIGNMENT);
-    //GridLayout g = new GridLayout(2,1);
     
     panel.setLayout( new BoxLayout(panel, BoxLayout.Y_AXIS));
     

@@ -1,6 +1,8 @@
 /*****************************************************************
  * Node.java
  * Node objects hold the location of a given point on the map. They are the vertices of the graph.
+ * @author Julia McDonald
+ * @date Dec. 18, 2017
  ****************************************************************/
 public class Node implements Comparable<Node>{
   
@@ -86,16 +88,27 @@ public class Node implements Comparable<Node>{
     return weight;
   }
   
+  /*
+   * Gets previous node in shortest path
+   * @return Node
+   */
   public Node getPrev() {
     return prev;
   }
   
+  /*
+   * sets the previous node in the shortest path
+   * @param n - new previous Node
+   */
   public void setPrev( Node n ) {
     prev = n;
   }
   
   /**
-   * Negative if less than, 0 if equal, positive if greater than
+   * Compares two nodes
+   * 
+   * @param n - the node to be compared
+   * @return Negative if less than, 0 if equal, positive if greater than
    */
   public int compareTo( Node n ) {
     if (this.weight == n.weight)

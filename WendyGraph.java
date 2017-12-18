@@ -2,7 +2,7 @@
   * WendyGraph.java
   * Creates a Graph of Nodes and Edges. This is a weighted adjacency list graph.
   * 
-  * @author Julia McDonald
+  * @author Julia McDonald, Xinhui Xu (all methods written by Julia unless noted)
   * @date Dec. 18, 2017
   ****************************************************************/
 
@@ -11,7 +11,7 @@ import java.io.*;
 import javafoundations.*;
 
 public class WendyGraph {
-  
+  //instance variables
   public ArrayList<Node> vertices;
   public ArrayList<LinkedList<Edge>> edges;
   public Double[] latitudes; public Double[] longitudes;
@@ -135,7 +135,9 @@ public class WendyGraph {
   }
   
   
-  /* Converts latitude and longitude of a node into its appropriate location on graph of any size.
+  /* @author Xinhui Xu
+   * 
+   * Converts latitude and longitude of a node into its appropriate location on graph of any size.
    * @param lat - the latitude of the node.
    * @param lon - the longitude of the node.
    * @param mapWidth - the width of the graph viewport.
