@@ -190,7 +190,7 @@ public class WendyGraph {
     
     Node source = vertices.get( findNodeIndex( sourceName ) );
     
-    //System.out.println( source );
+    System.out.println( source );
     PriorityQueue<Node> q = new PriorityQueue<Node>();
     
     for( Node v : vertices ) {
