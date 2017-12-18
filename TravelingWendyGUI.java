@@ -1,7 +1,10 @@
 /********************************************************************
 * TravelingWendyGUI.java
-* Driver class. 
-* Creates a TabbedPanePanel object and adds it to the GUI.
+* 
+* Driver to start the Traveling Wendy app,
+* which finds the shortest path between any two buildings or road intersections
+* on the Wellesley College campus.
+* 
 * 
 * @author Xinhui Xu, Julia McDonald
 * @date Dec. 18, 2017
@@ -18,7 +21,8 @@ public class TravelingWendyGUI {
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
  
     frame.setPreferredSize(new java.awt.Dimension(1280, 960));
-
+    
+    //Creates a TabbedPanePanel object and adds it to the GUI.
     TabbedPanePanel panel = new TabbedPanePanel();
     frame.getContentPane().add(panel);
     

@@ -1,9 +1,7 @@
 /**
  * TabbedPanePanel.java
  * 
- * Creates the about tab and the map tab (TravelingWendyPanel)
- * to be put inside the GUI.
- * 
+ * Creates the about tab and the map tab (TravelingWendyPanel).
  * Constructor is called from TravelingWendyGUI.java
  * 
  * @author Julia McDonald
