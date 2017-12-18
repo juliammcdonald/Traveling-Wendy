@@ -23,7 +23,6 @@ public class TravelingWendyGUI {
     frame.setPreferredSize(new java.awt.Dimension(1280, 960));
     
     //Creates a TabbedPanePanel object and adds it to the GUI.
-    TabbedPanePanel panel = new TabbedPanePanel();
 
     TabbedPanePanel panel;
     if( args.length == 2 ) {
