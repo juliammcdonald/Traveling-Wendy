@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
+import javax.swing.border.*;
 /**
  * @author Julia McDonald
  */
@@ -24,6 +25,9 @@ public class TabbedPanePanel extends JPanel {
   protected JComponent makeAboutPanel() {
     JPanel panel = new JPanel(false);
     JLabel text1 = new JLabel("Welcome to Traveling Wendy!");
+    text1.setFont(new Font("Monospaced", Font.BOLD, 28));
+    text1.setBorder(new EmptyBorder(10,0,10,0));
+
     JLabel text2 = new JLabel("Instructions: Click on the \"Map\" pane and select your start and "
                                 + "endpoints on the Wellesley campus. The shortest path will be highlighted.");
     JLabel text3 = new JLabel( "Creators: Xinhui Xu & Julia McDonald");

@@ -37,7 +37,8 @@ public class TravelingWendyPanel extends JPanel /*implements ChangeListener*/ {
     
     wendyGraph = new WendyGraph( "wellesleycoord.txt" );    
     selectedNodes = new String[2];    
-    selectLabel = new JLabel("Select origin");        
+    selectLabel = new JLabel("Select origin");
+    selectLabel.setFont(new Font("Monospaced", Font.BOLD, 20));
     mapLabel = new JLabel("This is the map placeholder");
     toggleDistance = true;
 
