@@ -2,7 +2,7 @@
 CS230 Final Project - Xinhui Xu and Julia McDonald
 
 ## How to run
-'''
+```
 $javac TravelingWendyGUI.java
 $java TravelingWendy
-'''
+```
