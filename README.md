@@ -6,3 +6,7 @@ CS230 Final Project - Xinhui Xu and Julia McDonald
 $javac TravelingWendyGUI.java
 $java TravelingWendy
 ```
+
+## Screenshot
+
+![alt text](https://github.com/juliammcdonald/reimagined-telegram/TW_screenshot.png "image")
