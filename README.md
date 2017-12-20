@@ -9,4 +9,4 @@ $java TravelingWendy
 
 ## Screenshot
 
-![alt text](https://github.com/juliammcdonald/reimagined-telegram/TW_screenshot.png "image")
+![alt text](https://github.com/juliammcdonald/reimagined-telegram/blob/master/TW_screenshot.png "image")
